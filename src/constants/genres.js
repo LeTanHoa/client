@@ -1,0 +1,17 @@
+export const VIETNAMESE_MUSIC_GENRES = [
+  'Nhạc Trẻ',
+  'V-Pop',
+  'Bolero',
+  'Nhạc Trữ Tình',
+  'Nhạc Quê Hương',
+  'Nhạc Cách Mạng',
+  'Nhạc Thiếu Nhi',
+  'Rap Việt',
+  'Indie Việt',
+  'EDM Việt',
+  'Lo-fi Việt',
+  'R&B Việt',
+  'Rock Việt',
+  'Dân Ca',
+  'Remix Việt',
+];

@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* Custom range input for seek bar */
+input[type='range'].seek {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+input[type='range'].seek::-webkit-slider-runnable-track {
+  height: 4px;
+  background: #4d4d4d;
+  border-radius: 2px;
+}
+input[type='range'].seek::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: #fff;
+  margin-top: -4px;
+  cursor: pointer;
+}
+input[type='range'].seek:focus {
+  outline: none;
+}

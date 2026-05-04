@@ -1,0 +1,13 @@
+{
+ 
+    "rewrites": [
+      {
+        "source": "/api/(.*)",
+        "destination": "https://spotify-server-orpin.vercel.app/$1"
+      }
+    ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
+  ]
+}
