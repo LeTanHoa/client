@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
 export function Login() {
-  const { login } = useAuth();
+  const { login,user, isAuthenticated } = useAuth();
+  console.log(user, isAuthenticated)
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
