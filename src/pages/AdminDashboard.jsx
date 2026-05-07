@@ -4,6 +4,7 @@ import { VIETNAMESE_MUSIC_GENRES } from '../constants/genres.js';
 import { AddMusicPanel } from '../components/AddMusicPanel.jsx';
 
 export function AdminDashboard() {
+  const [users, setUsers] = useState([]);
   const [songs, setSongs] = useState([]);
   const [songSearch, setSongSearch] = useState('');
   const [songGenre, setSongGenre] = useState('');
@@ -42,8 +43,19 @@ export function AdminDashboard() {
     }
   }, [songSearch, songGenre]);
 
+  async function loadUsers() {
+    try {
+      const users = await api('/users');
+      console.log(users);
+      setUsers(users.users || []);
+    } catch (e) {
+      setError(e.message);
+    }
+  }
+
   useEffect(() => {
     load();
+    loadUsers();
   }, [load]);
 
   const editingSong = useMemo(
@@ -113,6 +125,8 @@ export function AdminDashboard() {
       setBusySongId(null);
     }
   }
+
+ 
 
   return (
     <div className="space-y-8">

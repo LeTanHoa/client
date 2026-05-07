@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "proxy": "https://spotify-server-orpin.vercel.app",
+  "proxy": "https://spotify-server-orpin.vercel.app/api",
   "scripts": {
     "dev": "vite",
     "build": "node node_modules/vite/bin/vite.js build",

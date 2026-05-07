@@ -15,20 +15,20 @@ export function Layout() {
           <nav className="flex items-center gap-6 text-sm text-spotify-subtle">
             {isAuthenticated ? (
               <>
-                <Link className="hover:text-white transition" to="/">
-                  Home
-                </Link>
-                <Link className="hover:text-white transition" to="/playlists">
-                  Playlists
-                </Link>
-                <Link className="hover:text-white transition" to="/favorites">
-                  Yêu thích
-                </Link>
-                {user?.role === 'admin' && (
+
+                {user?.role === 'admin' ? (
                   <Link className="hover:text-white transition" to="/admin">
                     Admin
                   </Link>
-                )}
+                ) : (<> <Link className="hover:text-white transition" to="/">
+                  Home
+                </Link>
+                  <Link className="hover:text-white transition" to="/playlists">
+                    Playlists
+                  </Link>
+                  <Link className="hover:text-white transition" to="/favorites">
+                    Yêu thích
+                  </Link></>)}
                 <span className="text-white/90">{user?.username}</span>
                 <button
                   type="button"

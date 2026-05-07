@@ -15,9 +15,15 @@ export function Login() {
     e.preventDefault();
     setError(null);
     setLoading(true);
+  
     try {
-      await login(email, password);
-      navigate('/');
+      const user = await login(email, password);
+  
+      if (user.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setError(err.message);
     } finally {
