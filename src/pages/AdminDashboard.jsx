@@ -43,19 +43,10 @@ export function AdminDashboard() {
     }
   }, [songSearch, songGenre]);
 
-  async function loadUsers() {
-    try {
-      const users = await api('/users');
-      console.log(users);
-      setUsers(users.users || []);
-    } catch (e) {
-      setError(e.message);
-    }
-  }
+
 
   useEffect(() => {
     load();
-    loadUsers();
   }, [load]);
 
   const editingSong = useMemo(
