@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { api, apiForm } from '../api.js';
 import { VIETNAMESE_MUSIC_GENRES } from '../constants/genres.js';
+import { uploadAudioToCloudinary } from '../utils/cloudinaryUpload.js';
 
 export function AddMusicPanel({ onAdded }) {
   const [tab, setTab] = useState('link');
@@ -45,27 +46,41 @@ export function AddMusicPanel({ onAdded }) {
   async function submitFile(e) {
     e.preventDefault();
     setMsg(null);
+
     const form = e.currentTarget;
     const input = form.elements.namedItem('audio');
-    const f = input && 'files' in input ? input.files?.[0] : null;
-    if (!f) {
+    const file = input?.files?.[0];
+
+    if (!file) {
       setMsg({ type: 'err', text: 'Chọn file nhạc.' });
       return;
     }
-    const fd = new FormData();
-    fd.append('audio', f);
-    if (title.trim()) fd.append('title', title.trim());
-    if (artist.trim()) fd.append('artist', artist.trim());
-    if (genre.trim()) fd.append('genre', genre.trim());
+
     setBusy(true);
+
     try {
-      await apiForm('/songs/upload', fd);
+      // 1. Upload trực tiếp lên Cloudinary
+      const uploaded = await uploadAudioToCloudinary(file);
+
+      // 2. Gửi URL về backend
+      await api('/songs/upload', {
+        method: 'POST',
+        body: JSON.stringify({
+          title: title.trim() || file.name,
+          artist: artist.trim() || 'Unknown',
+          genre: genre.trim() || '',
+          // duration: duration.trim() || '',
+          fileUrl: uploaded.url,
+        }),
+      });
+
       form.reset();
       setTitle('');
       setArtist('');
       setGenre('');
       onAdded?.();
-      setMsg({ type: 'ok', text: 'Đã tải lên và thêm bài.' });
+
+      setMsg({ type: 'ok', text: 'Đã tải lên thành công.' });
     } catch (err) {
       setMsg({ type: 'err', text: err.message });
     } finally {
@@ -87,11 +102,10 @@ export function AddMusicPanel({ onAdded }) {
             setTab('link');
             setMsg(null);
           }}
-          className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
-            tab === 'link'
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${tab === 'link'
               ? 'bg-spotify-green text-black'
               : 'bg-spotify-hover text-spotify-subtle hover:text-white'
-          }`}
+            }`}
         >
           Từ link
         </button>
@@ -101,11 +115,10 @@ export function AddMusicPanel({ onAdded }) {
             setTab('file');
             setMsg(null);
           }}
-          className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
-            tab === 'file'
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${tab === 'file'
               ? 'bg-spotify-green text-black'
               : 'bg-spotify-hover text-spotify-subtle hover:text-white'
-          }`}
+            }`}
         >
           Từ file
         </button>
