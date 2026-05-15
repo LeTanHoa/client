@@ -189,6 +189,42 @@ export function PlayerProvider({ children }) {
     playNextTrackRef.current = playNextTrack;
   }, [playNextTrack]);
 
+  const playPreviousTrack = useCallback(async () => {
+    const q = queueRef.current;
+    const i = queueIndexRef.current;
+    if (!q.length) {
+      setPlaying(false);
+      return;
+    }
+
+    let prevIdx;
+    if (shuffleRef.current) {
+      if (q.length <= 1) {
+        setPlaying(false);
+        return;
+      }
+      do {
+        prevIdx = Math.floor(Math.random() * q.length);
+      } while (prevIdx === i);
+    } else {
+      prevIdx = i - 1;
+      if (prevIdx < 0) {
+        setPlaying(false);
+        return;
+      }
+    }
+
+    const prev = q[prevIdx];
+    if (!prev) {
+      setPlaying(false);
+      return;
+    }
+
+    queueIndexRef.current = prevIdx;
+    setQueueIndex(prevIdx);
+    await beginPlayback(prev);
+  }, [beginPlayback]);
+
   const playTrack = useCallback(
     async (track, options = {}) => {
       const t = normalizePlayerTrack(track);

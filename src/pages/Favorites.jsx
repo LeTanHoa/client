@@ -1,55 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import { api, coverUrlForSong } from '../api.js';
+import { api } from '../api.js';
 import { usePlayer } from '../context/PlayerContext.jsx';
+import { useTheme } from '../context/ThemeContext.jsx';
 import { useFavorites } from '../context/FavoritesContext.jsx';
 import { AddToPlaylistModal } from '../components/AddToPlaylistModal.jsx';
-import { FavoriteHeart } from '../components/FavoriteHeart.jsx';
-
-function SongCard({ song, onPlay, onAdd }) {
-  return (
-    <div className="group bg-spotify-panel hover:bg-spotify-hover rounded-lg p-4 transition cursor-pointer border border-transparent hover:border-white/10">
-      <div className="relative aspect-square mb-3 rounded-md overflow-hidden bg-spotify-hover">
-        <img
-          src={coverUrlForSong(song.id)}
-          alt=""
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            e.target.style.opacity = 0;
-          }}
-        />
-        <div className="absolute top-2 right-2 z-10">
-          <FavoriteHeart songId={song.id} className="bg-black/40 backdrop-blur-sm" />
-        </div>
-        <button
-          type="button"
-          onClick={() => onPlay(song)}
-          className="absolute bottom-2 right-2 w-11 h-11 rounded-full bg-spotify-green text-black flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition"
-          aria-label="Play"
-        >
-          <svg className="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-        </button>
-      </div>
-      <h3 className="font-medium truncate">{song.title}</h3>
-      <p className="text-sm text-spotify-subtle truncate">{song.artist}</p>
-      <div className="flex gap-2 mt-3 items-center">
-        <button
-          type="button"
-          onClick={() => onPlay(song)}
-          className="text-xs text-spotify-green hover:underline"
-        >
-          Play
-        </button>
-        <button type="button" onClick={() => onAdd(song)} className="text-xs text-spotify-subtle hover:text-white">
-          Add to playlist
-        </button>
-      </div>
-    </div>
-  );
-}
+import { SongCard } from '../components/SongCard.jsx';
 
 export function Favorites() {
+  const { isDark } = useTheme();
   const { playTrack } = usePlayer();
   const { favoriteIds } = useFavorites();
   const [songs, setSongs] = useState([]);
@@ -78,33 +36,38 @@ export function Favorites() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold mb-2">Yêu thích</h1>
-        <p className="text-spotify-subtle">Nhạc bạn đã lưu bằng icon trái tim.</p>
+      <div className={`rounded-[2rem] border p-6 ${isDark ? 'bg-[#150f28] border-white/10' : 'bg-white border-slate-200'}`}>
+        <h1 className="text-3xl font-bold">Yêu thích</h1>
+        <p className={`mt-2 ${isDark ? 'text-spotify-subtle' : 'text-slate-600'}`}>
+          Nhạc bạn đã lưu bằng icon trái tim.
+        </p>
       </div>
 
       {error && <p className="text-red-400">{error}</p>}
 
       {loading ? (
-        <p className="text-spotify-subtle">Đang tải…</p>
+        <p className={isDark ? 'text-spotify-subtle' : 'text-slate-600'}>Đang tải…</p>
       ) : songs.length === 0 ? (
-        <p className="text-spotify-subtle">Chưa có bài yêu thích. Nhấn trái tim trên bài hát để thêm.</p>
+        <div className={`rounded-[2rem] border p-6 ${isDark ? 'bg-[#110c1b] border-white/10' : 'bg-white border-slate-200'}`}>
+          <p className={isDark ? 'text-spotify-subtle' : 'text-slate-600'}>
+            Chưa có bài yêu thích. Nhấn trái tim trên bài hát để thêm.
+          </p>
+        </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           {songs.map((song) => (
             <SongCard
               key={song.id}
               song={song}
               onPlay={playFrom(songs)}
               onAdd={setModalSong}
+              isDark={isDark}
             />
           ))}
         </div>
       )}
 
-      {modalSong && (
-        <AddToPlaylistModal songId={modalSong.id} onClose={() => setModalSong(null)} />
-      )}
+      {modalSong && <AddToPlaylistModal songId={modalSong.id} onClose={() => setModalSong(null)} />}
     </div>
   );
 }

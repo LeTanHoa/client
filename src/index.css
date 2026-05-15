@@ -1,10 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(157, 78, 221, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(157, 78, 221, 0.7);
 }
 
 /* Custom range input for seek bar */
@@ -12,21 +41,62 @@ input[type='range'].seek {
   -webkit-appearance: none;
   appearance: none;
   background: transparent;
+  width: 100%;
+  cursor: pointer;
 }
+
 input[type='range'].seek::-webkit-slider-runnable-track {
   height: 4px;
-  background: #4d4d4d;
+  background: rgba(176, 176, 176, 0.3);
   border-radius: 2px;
 }
+
 input[type='range'].seek::-webkit-slider-thumb {
   -webkit-appearance: none;
   height: 12px;
   width: 12px;
   border-radius: 50%;
-  background: #fff;
+  background: linear-gradient(135deg, #9d4edd 0%, #5a189a 100%);
   margin-top: -4px;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(157, 78, 221, 0.4);
 }
+
 input[type='range'].seek:focus {
   outline: none;
+}
+
+input[type='range'].seek::-moz-range-track {
+  background: rgba(176, 176, 176, 0.3);
+  border-radius: 2px;
+  height: 4px;
+}
+
+input[type='range'].seek::-moz-range-thumb {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #9d4edd 0%, #5a189a 100%);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(157, 78, 221, 0.4);
+}
+
+/* Smooth transitions */
+@layer components {
+  .transition-smooth {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .btn-primary {
+    @apply rounded-lg bg-gradient-to-r from-zing-primary to-zing-secondary px-4 py-2.5 text-sm font-bold text-white shadow-lg transition-all hover:shadow-lg hover:brightness-110;
+  }
+
+  .btn-secondary {
+    @apply rounded-lg border border-white/10 px-4 py-2.5 text-sm font-bold text-zing-text-secondary transition-all hover:border-zing-primary/50 hover:text-zing-primary hover:bg-white/5;
+  }
+
+  .glass-effect {
+    @apply backdrop-blur-xl bg-zing-bg/80;
+  }
 }

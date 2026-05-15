@@ -8,6 +8,8 @@ import { Register } from './pages/Register.jsx';
 import { Playlists } from './pages/Playlists.jsx';
 import { PlaylistDetail } from './pages/PlaylistDetail.jsx';
 import { Favorites } from './pages/Favorites.jsx';
+import { Search } from './pages/Search.jsx';
+import { Charts } from './pages/Charts.jsx';
 import { AdminDashboard } from './pages/AdminDashboard.jsx';
 
 export default function App() {
@@ -15,6 +17,8 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/charts" element={<Charts />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/playlists/:id" element={<PlaylistDetail />} />

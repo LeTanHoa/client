@@ -1,62 +1,35 @@
-import { Link, Outlet } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext.jsx';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext.jsx';
+import { Sidebar } from './Sidebar.jsx';
+import { Header } from './Header.jsx';
 import { PlayerBar } from './PlayerBar.jsx';
 
 export function Layout() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { isDark } = useTheme();
+  const navigate = useNavigate();
+
+  const handleSearch = (query) => {
+    if (query.trim()) {
+      navigate(`/search?search=${encodeURIComponent(query.trim())}`);
+    } else {
+      navigate('/');
+    }
+  };
 
   return (
-    <div className="min-h-screen flex flex-col pb-28">
-      <header className="border-b border-white/10 bg-spotify-panel/80 backdrop-blur sticky top-0 z-20">
-        <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link to="/" className="font-bold text-spotify-green tracking-tight text-lg">
-            Spotify Mini
-          </Link>
-          <nav className="flex items-center gap-6 text-sm text-spotify-subtle">
-            {isAuthenticated ? (
-              <>
+    <div className={`min-h-screen transition-colors duration-300 ${
+      isDark ? 'bg-zing-gradient text-zing-text' : 'bg-slate-50 text-slate-900'
+    }`}>
+      <Sidebar />
 
-                {user?.role === 'admin' ? (
-                  <Link className="hover:text-white transition" to="/admin">
-                    Admin
-                  </Link>
-                ) : (<> <Link className="hover:text-white transition" to="/">
-                  Home
-                </Link>
-                  <Link className="hover:text-white transition" to="/playlists">
-                    Playlists
-                  </Link>
-                  <Link className="hover:text-white transition" to="/favorites">
-                    Yêu thích
-                  </Link></>)}
-                <span className="text-white/90">{user?.username}</span>
-                <button
-                  type="button"
-                  onClick={logout}
-                  className="text-white/70 hover:text-white transition"
-                >
-                  Log out
-                </button>
-              </>
-            ) : (
-              <>
-                <Link className="hover:text-white transition" to="/login">
-                  Log in
-                </Link>
-                <Link
-                  className="rounded-full bg-white text-black px-4 py-1.5 font-medium hover:scale-[1.02] transition"
-                  to="/register"
-                >
-                  Sign up
-                </Link>
-              </>
-            )}
-          </nav>
+      <Header onSearch={handleSearch} />
+
+      <main className="fixed top-20 left-72 right-0 bottom-28 overflow-y-auto">
+        <div className="px-4 md:px-6 lg:px-8 xl:px-10 py-6">
+          <Outlet />
         </div>
-      </header>
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
-        <Outlet />
       </main>
+
       <PlayerBar />
     </div>
   );

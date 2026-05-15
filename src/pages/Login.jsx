@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useTheme } from '../context/ThemeContext.jsx';
 
 export function Login() {
+  const { isDark } = useTheme();
   const { login} = useAuth();
  
   const navigate = useNavigate();
@@ -32,44 +34,79 @@ export function Login() {
   }
 
   return (
-    <div className="max-w-sm mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Log in</h1>
-      <form onSubmit={onSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm text-spotify-subtle mb-1">Email</label>
-          <input
-            type="email"
-            required
-            className="w-full bg-spotify-panel border border-white/20 rounded-lg px-3 py-2 outline-none focus:border-spotify-green"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+    <div className="mx-auto max-w-md px-4 py-8 sm:px-6">
+      <div className={`rounded-2xl border p-8 shadow-2xl ${isDark ? 'bg-zing-bg-panel border-white/10' : 'bg-white border-slate-200'}`}>
+        <div className="mb-8">
+          <p className="text-xs uppercase tracking-widest font-bold text-zing-success">👋 Chào mừng trở lại</p>
+          <h1 className="mt-4 text-3xl md:text-4xl font-black bg-gradient-to-r from-zing-primary to-zing-accent bg-clip-text text-transparent">
+            Đăng nhập
+          </h1>
+          <p className={`mt-3 text-sm ${isDark ? 'text-zing-text-secondary' : 'text-slate-600'}`}>
+            Đăng nhập để tiếp tục nghe nhạc và quản lý playlist của bạn.
+          </p>
         </div>
-        <div>
-          <label className="block text-sm text-spotify-subtle mb-1">Password</label>
-          <input
-            type="password"
-            required
-            className="w-full bg-spotify-panel border border-white/20 rounded-lg px-3 py-2 outline-none focus:border-spotify-green"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+
+        <form onSubmit={onSubmit} className="space-y-5">
+          <div>
+            <label className={`block text-sm font-semibold mb-2.5 ${isDark ? 'text-zing-text-secondary' : 'text-slate-700'}`}>
+              📧 Email
+            </label>
+            <input
+              type="email"
+              required
+              placeholder="your@email.com"
+              className={`w-full rounded-lg px-4 py-3 outline-none transition-all duration-200 border ${
+                isDark
+                  ? 'bg-zing-bg-tertiary border-white/10 text-zing-text placeholder-zing-text-tertiary focus:border-zing-primary/50 focus:ring-2 focus:ring-zing-primary/20'
+                  : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500 focus:border-zing-primary focus:ring-2 focus:ring-zing-primary/20'
+              }`}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className={`block text-sm font-semibold mb-2.5 ${isDark ? 'text-zing-text-secondary' : 'text-slate-700'}`}>
+              🔐 Mật khẩu
+            </label>
+            <input
+              type="password"
+              required
+              placeholder="••••••••"
+              className={`w-full rounded-lg px-4 py-3 outline-none transition-all duration-200 border ${
+                isDark
+                  ? 'bg-zing-bg-tertiary border-white/10 text-zing-text placeholder-zing-text-tertiary focus:border-zing-primary/50 focus:ring-2 focus:ring-zing-primary/20'
+                  : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500 focus:border-zing-primary focus:ring-2 focus:ring-zing-primary/20'
+              }`}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          {error && (
+            <div className={`rounded-lg p-3 text-sm font-medium ${isDark ? 'bg-zing-pink/20 text-zing-pink border border-zing-pink/30' : 'bg-red-50 text-red-600 border border-red-200'}`}>
+              ⚠️ {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-lg bg-gradient-to-r from-zing-primary to-zing-secondary px-6 py-3 text-sm font-bold text-white shadow-lg transition-all hover:shadow-lg hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? '⏳ Đang đăng nhập…' : '▶ Đăng nhập'}
+          </button>
+        </form>
+
+        <div className={`mt-6 pt-6 border-t ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+          <p className={`text-sm text-center ${isDark ? 'text-zing-text-tertiary' : 'text-slate-600'}`}>
+            Chưa có tài khoản?{' '}
+            <Link className={`font-bold underline transition-colors ${isDark ? 'text-zing-primary hover:text-zing-accent' : 'text-zing-primary hover:text-zing-secondary'}`} to="/register">
+              Đăng ký ngay
+            </Link>
+          </p>
         </div>
-        {error && <p className="text-sm text-red-400">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-full bg-spotify-green text-black font-semibold py-2.5 hover:brightness-110 transition disabled:opacity-50"
-        >
-          {loading ? 'Signing in…' : 'Continue'}
-        </button>
-      </form>
-      <p className="mt-6 text-sm text-spotify-subtle">
-        No account?{' '}
-        <Link className="text-white underline" to="/register">
-          Sign up
-        </Link>
-      </p>
+      </div>
     </div>
   );
 }
