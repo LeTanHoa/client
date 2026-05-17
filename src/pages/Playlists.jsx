@@ -10,6 +10,7 @@ export function Playlists() {
   const [name, setName] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState(null);
 
   async function refresh() {
     const data = await api('/playlist');
@@ -63,6 +64,23 @@ export function Playlists() {
       await refresh();
     } catch (err) {
       setError(err.message);
+    }
+  }
+
+  async function removePlaylist(playlistId) {
+    if (!window.confirm('Bạn chắc chắn muốn xoá playlist này?')) {
+      return;
+    }
+
+    setDeletingId(playlistId);
+    setError(null);
+    try {
+      await api(`/playlist/${playlistId}`, { method: 'DELETE' });
+      await refresh();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeletingId(null);
     }
   }
 
@@ -160,18 +178,20 @@ export function Playlists() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {playlists.map((p) => (
-            <Link
+            <div
               key={p.id}
-              to={`/playlists/${p.id}`}
-              className={`block rounded-[2rem] border p-6 transition ${isDark
+              className={`rounded-[2rem] border p-6 transition ${isDark
                   ? 'bg-[#150f28] border-white/10 hover:border-white/20'
                   : 'bg-white border-slate-200 hover:border-slate-300'
                 }`}
             >
               <div className="flex items-center justify-between gap-3">
-                <span className="truncate text-lg font-semibold">
+                <Link
+                  to={`/playlists/${p.id}`}
+                  className="min-w-0 flex-1 truncate text-lg font-semibold hover:text-spotify-green"
+                >
                   {p.name}
-                </span>
+                </Link>
 
                 <span
                   className={`text-sm ${isDark
@@ -182,7 +202,28 @@ export function Playlists() {
                   {p.songCount || 0} bài
                 </span>
               </div>
-            </Link>
+
+              <div className="mt-5 flex items-center justify-between gap-3">
+                <Link
+                  to={`/playlists/${p.id}`}
+                  className={`rounded-full px-4 py-2 text-sm font-semibold transition ${isDark
+                      ? 'bg-white/10 text-white hover:bg-white/15'
+                      : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
+                    }`}
+                >
+                  Mở
+                </Link>
+
+                <button
+                  type="button"
+                  disabled={deletingId === p.id}
+                  onClick={() => removePlaylist(p.id)}
+                  className="rounded-full border border-red-500/50 px-4 py-2 text-sm font-semibold text-red-400 transition hover:bg-red-500 hover:text-white disabled:opacity-50"
+                >
+                  Xoá
+                </button>
+              </div>
+            </div>
           ))}
         </div>
       )}

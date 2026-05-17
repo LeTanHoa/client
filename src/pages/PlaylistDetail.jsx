@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { api, coverUrlForSong } from '../api.js';
 
@@ -11,11 +11,13 @@ import { FavoriteHeart } from '../components/FavoriteHeart.jsx';
 export function PlaylistDetail() {
   const { isDark } = useTheme();
   const { id } = useParams();
+  const navigate = useNavigate();
   const { playTrack } = usePlayer();
 
   const [playlist, setPlaylist] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -65,6 +67,23 @@ export function PlaylistDetail() {
     [entries]
   );
 
+  async function removePlaylist() {
+    if (!window.confirm('Bạn chắc chắn muốn xoá playlist này?')) {
+      return;
+    }
+
+    setDeleting(true);
+    setError(null);
+    try {
+      await api(`/playlist/${id}`, { method: 'DELETE' });
+      navigate('/playlists');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   if (loading) {
     return <p className={isDark ? 'text-spotify-subtle' : 'text-slate-600'}>Đang tải...</p>;
   }
@@ -84,14 +103,24 @@ export function PlaylistDetail() {
               {entries.length} bài hát trong danh sách
             </p>
           </div>
-          <Link
-            to="/playlists"
-            className={`inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition ${
-              isDark ? 'bg-white/10 text-white hover:bg-white/15' : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
-            }`}
-          >
-            ← Về playlist
-          </Link>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              to="/playlists"
+              className={`inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition ${
+                isDark ? 'bg-white/10 text-white hover:bg-white/15' : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
+              }`}
+            >
+              ← Về playlist
+            </Link>
+            <button
+              type="button"
+              disabled={deleting}
+              onClick={removePlaylist}
+              className="inline-flex items-center justify-center rounded-full border border-red-500/50 px-5 py-3 text-sm font-semibold text-red-400 transition hover:bg-red-500 hover:text-white disabled:opacity-50"
+            >
+              Xoá playlist
+            </button>
+          </div>
         </div>
       </div>
 

@@ -4,7 +4,7 @@ import { useTheme } from '../context/ThemeContext.jsx';
 import { VIETNAMESE_MUSIC_GENRES } from '../constants/genres.js';
 import { uploadAudioToCloudinary } from '../utils/cloudinaryUpload.js';
 
-export function AddMusicPanel({ onAdded }) {
+export function AddMusicPanel({ onAdded, variant = 'default' }) {
   const { isDark } = useTheme();
 
   const [tab, setTab] = useState('link');
@@ -134,7 +134,7 @@ export function AddMusicPanel({ onAdded }) {
 
   return (
     <section
-      className={`border rounded-xl p-5 max-w-xl ${isDark
+      className={`border rounded-lg p-5 ${variant === 'admin' ? 'max-w-none' : 'max-w-xl'} ${isDark
           ? 'bg-spotify-panel border-white/10'
           : 'bg-gray-100 border-black/10'
         }`}
