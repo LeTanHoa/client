@@ -59,11 +59,11 @@ export function Search() {
 
   return (
     <div className="space-y-8">
-      <div className={`rounded-[2rem] border p-6 ${isDark ? 'bg-[#150f28] border-white/10' : 'bg-white border-slate-200'}`}>
+      <div className={`rounded-2xl border p-4 sm:p-6 ${isDark ? 'bg-[#150f28] border-white/10' : 'bg-white border-slate-200'}`}>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.35em] text-spotify-green">Tìm kiếm</p>
-            <h1 className="mt-3 text-3xl font-black">Kết quả cho “{query || '...' }”</h1>
+            <h1 className="mt-3 break-words text-2xl font-black sm:text-3xl">Kết quả cho “{query || '...' }”</h1>
             <p className={`mt-3 text-sm ${isDark ? 'text-spotify-subtle' : 'text-slate-600'}`}>
               Tìm nhanh bài hát, nghệ sĩ và album trong thư viện.
             </p>
@@ -81,7 +81,7 @@ export function Search() {
       </div>
 
       {!query.trim() ? (
-        <div className={`rounded-[2rem] border p-6 ${isDark ? 'bg-[#110c1b] border-white/10' : 'bg-white border-slate-200'}`}>
+        <div className={`rounded-2xl border p-4 sm:p-6 ${isDark ? 'bg-[#110c1b] border-white/10' : 'bg-white border-slate-200'}`}>
           <p className={`text-sm ${isDark ? 'text-spotify-subtle' : 'text-slate-600'}`}>
             Nhập từ khóa vào ô tìm kiếm trên thanh header để bắt đầu.
           </p>
@@ -91,17 +91,18 @@ export function Search() {
       ) : error ? (
         <p className="text-red-400">{error}</p>
       ) : songs.length === 0 ? (
-        <div className={`rounded-[2rem] border p-6 ${isDark ? 'bg-[#110c1b] border-white/10' : 'bg-white border-slate-200'}`}>
+        <div className={`rounded-2xl border p-4 sm:p-6 ${isDark ? 'bg-[#110c1b] border-white/10' : 'bg-white border-slate-200'}`}>
           <p className={isDark ? 'text-spotify-subtle' : 'text-slate-600'}>
             Không tìm thấy kết quả cho <strong>{query}</strong>.
           </p>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
           {songs.map((song) => (
             <SongCard
               key={song.id}
               song={song}
+              mobileTile
               onPlay={playFrom(songs)}
               onAdd={(picked) => {
                 if (!isAuthenticated) {

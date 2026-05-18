@@ -24,11 +24,10 @@ export function PlayerBar() {
 
   if (!current) {
     return (
-      <div className={`fixed bottom-0 left-72 right-0 h-28 border-t flex items-center justify-center text-sm z-30 transition-colors duration-300 ${
-        isDark
+      <div className={`fixed bottom-16 left-0 right-0 z-30 flex h-14 items-center justify-center border-t text-sm transition-colors duration-300 sm:bottom-20 sm:h-16 lg:bottom-0 lg:left-72 lg:h-28 ${isDark
           ? 'bg-zing-bg border-white/10 text-zing-text-tertiary'
           : 'bg-slate-100 border-slate-200 text-slate-600'
-      }`}>
+        }`}>
         🎵 Chọn bài hát để bắt đầu nghe
       </div>
     );
@@ -39,46 +38,45 @@ export function PlayerBar() {
   const canSkip =
     shuffle ? queue.length > 1 : queue.length > 0 && queueIndex < queue.length - 1;
 
+
   return (
-    <div className={`fixed bottom-0 left-72 right-0 border-t z-30 transition-colors duration-300 backdrop-blur-xl ${
-      isDark
+    <div className={`fixed bottom-16 left-0 right-0 z-30 border-t backdrop-blur-xl transition-colors duration-300 sm:bottom-20 lg:bottom-0 lg:left-72 ${isDark
         ? 'bg-zing-bg/95 border-white/10 shadow-[0_-16px_64px_rgba(0,0,0,0.4)]'
         : 'bg-white/95 border-slate-200 shadow-[0_-16px_64px_rgba(15,23,42,0.08)]'
-    }`}>
-      <div className="mx-auto flex h-full max-w-[1600px] items-center gap-4 px-6 py-4">
+      }`}>
+      <div className="mx-auto grid h-full max-w-[1600px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4 sm:py-3 lg:flex lg:gap-4 lg:px-6 lg:py-4">
         {/* Album Cover */}
         <img
           src={coverUrlForSong(current.id)}
           alt={current.title}
-          className={`w-16 h-16 rounded-lg shrink-0 object-cover shadow-lg ${
-            isDark ? 'bg-zing-bg-secondary' : 'bg-slate-200'
-          }`}
+          className={`h-11 w-11 shrink-0 rounded-lg object-cover shadow-lg sm:h-12 sm:w-12 lg:h-16 lg:w-16 ${isDark ? 'bg-zing-bg-secondary' : 'bg-slate-200'
+            }`}
           onError={(e) => {
             e.target.style.display = 'none';
           }}
         />
 
         {/* Song Info */}
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="truncate text-base font-bold text-zing-text">{current.title}</span>
-            <FavoriteHeart songId={current.id} size="sm" className="!p-1" />
+        <div className="min-w-0">
+          <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
+            <span className="truncate text-sm font-bold text-zing-text sm:text-base">{current.title}</span>
+            <FavoriteHeart songId={current.id} size="sm" className="hidden !p-1 sm:inline-flex" />
           </div>
-          <p className={`mt-1 text-sm ${isDark ? 'text-zing-text-tertiary' : 'text-slate-500'}`}>
+          <p className={`mt-0.5 truncate text-xs sm:mt-1 sm:text-sm ${isDark ? 'text-zing-text-tertiary' : 'text-slate-500'}`}>
             {current.artist}
           </p>
+        </div>
 
-          {/* Player Controls */}
-          <div className="mt-3 flex flex-wrap items-center gap-2">
+        {/* Player Controls */}
+        <div className="flex items-center justify-end gap-1.5 sm:gap-2 lg:mt-3 lg:justify-start">
             {/* Previous Button */}
             <button
               type="button"
               onClick={() => void playPreviousTrack()}
-              className={`h-10 w-10 rounded-lg flex items-center justify-center transition ${
-                isDark
+              className={`hidden h-8 w-8 items-center justify-center rounded-lg transition sm:flex sm:h-10 sm:w-10 ${isDark
                   ? 'bg-zing-bg-panel text-zing-text-secondary hover:bg-zing-bg-tertiary hover:text-zing-primary border border-white/10'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200'
-              }`}
+                }`}
               title="Bài trước"
               aria-label="Bài trước"
             >
@@ -91,13 +89,12 @@ export function PlayerBar() {
             <button
               type="button"
               onClick={() => setShuffle((s) => !s)}
-              className={`h-10 w-10 rounded-lg flex items-center justify-center transition border ${
-                shuffle
+              className={`hidden h-8 w-8 items-center justify-center rounded-lg border transition md:flex sm:h-10 sm:w-10 ${shuffle
                   ? 'bg-gradient-to-r from-zing-primary to-zing-secondary text-white border-transparent shadow-md'
                   : isDark
                     ? 'bg-zing-bg-panel text-zing-text-secondary hover:bg-zing-bg-tertiary hover:text-zing-primary border-white/10'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200'
-              }`}
+                }`}
               title={shuffle ? 'Tắt shuffle' : 'Bật shuffle'}
               aria-pressed={shuffle}
             >
@@ -110,11 +107,10 @@ export function PlayerBar() {
             <button
               type="button"
               onClick={() => void playRandomTrack()}
-              className={`h-10 w-10 rounded-lg flex items-center justify-center transition border ${
-                isDark
+              className={`hidden h-8 w-8 items-center justify-center rounded-lg border transition md:flex sm:h-10 sm:w-10 ${isDark
                   ? 'bg-zing-bg-panel text-zing-text-secondary hover:bg-zing-bg-tertiary hover:text-zing-accent border-white/10'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200'
-              }`}
+                }`}
               title="Phát ngẫu nhiên"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -127,11 +123,10 @@ export function PlayerBar() {
               type="button"
               onClick={() => void playNextTrack()}
               disabled={!canSkip}
-              className={`h-10 w-10 rounded-lg flex items-center justify-center transition border disabled:opacity-30 disabled:pointer-events-none ${
-                isDark
+              className={`hidden h-8 w-8 items-center justify-center rounded-lg border transition disabled:pointer-events-none disabled:opacity-30 sm:flex sm:h-10 sm:w-10 ${isDark
                   ? 'bg-zing-bg-panel text-zing-text-secondary hover:bg-zing-bg-tertiary hover:text-zing-primary border-white/10'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200'
-              }`}
+                }`}
               title="Bài kế tiếp"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -143,11 +138,10 @@ export function PlayerBar() {
             <button
               type="button"
               onClick={() => void togglePlay()}
-              className={`h-11 w-11 rounded-lg flex items-center justify-center transition font-bold ${
-                isDark
+              className={`flex h-10 w-10 items-center justify-center rounded-full font-bold transition sm:h-11 sm:w-11 lg:rounded-lg ${isDark
                   ? 'bg-gradient-to-r from-zing-primary to-zing-secondary text-white shadow-lg'
                   : 'bg-gradient-to-r from-zing-primary to-zing-secondary text-white shadow-lg'
-              }`}
+                }`}
               aria-label={playing ? 'Pause' : 'Play'}
             >
               {playing ? (
@@ -162,31 +156,28 @@ export function PlayerBar() {
             </button>
 
             {/* Time Display */}
-            <span className={`text-xs tabular-nums w-12 text-right font-medium ${
-              isDark ? 'text-zing-text-secondary' : 'text-slate-500'
-            }`}>
+            <span className={`hidden w-10 text-right text-[11px] font-medium tabular-nums lg:inline-block lg:w-12 lg:text-xs ${isDark ? 'text-zing-text-secondary' : 'text-slate-500'
+              }`}>
               {formatTime(currentTime)}
             </span>
 
-            {/* Progress Slider */}
-            <input
-              type="range"
-              min={0}
-              max={1}
-              step={0.001}
-              value={sliderValue}
-              onChange={(e) => seek(Number(e.target.value))}
-              className="seek h-1 flex-1 cursor-pointer"
-            />
-
             {/* Duration Display */}
-            <span className={`text-xs tabular-nums w-12 font-medium ${
-              isDark ? 'text-zing-text-secondary' : 'text-slate-500'
-            }`}>
+            <span className={`hidden w-10 text-[11px] font-medium tabular-nums lg:inline-block lg:w-12 lg:text-xs ${isDark ? 'text-zing-text-secondary' : 'text-slate-500'
+              }`}>
               {formatTime(duration)}
             </span>
-          </div>
         </div>
+
+        {/* Progress Slider */}
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step={0.001}
+          value={sliderValue}
+          onChange={(e) => seek(Number(e.target.value))}
+          className="seek col-span-3 h-1 w-full cursor-pointer lg:flex-1"
+        />
       </div>
     </div>
   );

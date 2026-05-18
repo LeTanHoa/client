@@ -107,6 +107,7 @@ export function AddMusicPanel({ onAdded, variant = 'default' }) {
           artist: artist.trim() || 'Unknown',
           genre: genre.trim() || '',
           fileUrl: uploaded.url,
+          duration: Math.round(Number(uploaded.duration) || 0),
         }),
       });
 

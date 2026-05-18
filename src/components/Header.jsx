@@ -35,11 +35,17 @@ export function Header({ onSearch }) {
 
   return (
     <header
-      className={`fixed top-0 left-72 right-0 h-20 transition-colors duration-300 z-30 backdrop-blur-xl border-b ${
+      className={`fixed left-0 right-0 top-0 z-30 h-16 border-b backdrop-blur-xl transition-colors duration-300 lg:left-72 lg:h-20 ${
         isDark ? 'bg-zing-bg/90 border-white/5' : 'bg-white/95 border-slate-200'
       }`}
     >
-      <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between gap-6 px-6">
+      <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between gap-2 px-3 sm:gap-4 sm:px-4 lg:gap-6 lg:px-6">
+        <Link to="/" className="flex shrink-0 items-center gap-2 lg:hidden" aria-label="ZingMP3">
+          <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-zing-primary to-zing-secondary shadow-lg">
+            <span className="text-sm font-black text-white">Z</span>
+          </div>
+        </Link>
+
         {/* Navigation Items - Hidden on mobile */}
         <div className="hidden xl:flex items-center gap-2">
           {navItems.map((item) => (
@@ -62,14 +68,14 @@ export function Header({ onSearch }) {
         </div>
 
         {/* Search Bar */}
-        <div className="flex-1 min-w-[240px]">
+        <div className="min-w-0 flex-1 lg:min-w-[240px]">
           <div className="relative">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zing-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
               type="text"
-              placeholder="Tìm kiếm bài hát, nghệ sĩ, playlist..."
+              placeholder="Tìm kiếm..."
               value={searchValue}
               onChange={handleSearch}
               className={`w-full pl-10 pr-4 py-2.5 text-sm rounded-full border transition-all duration-200 outline-none ${
@@ -82,7 +88,7 @@ export function Header({ onSearch }) {
         </div>
 
         {/* Right Section - Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
@@ -144,10 +150,10 @@ export function Header({ onSearch }) {
               )}
             </div>
           ) : (
-            <div className="hidden md:flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               <Link
                 to="/login"
-                className={`rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200 border ${
+                className={`rounded-lg px-2.5 py-2 text-xs font-medium transition-all duration-200 border sm:px-4 sm:py-2.5 sm:text-sm ${
                   isDark
                     ? 'text-zing-text-secondary hover:text-zing-text hover:bg-white/5 border-transparent'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 border-transparent'
@@ -157,7 +163,7 @@ export function Header({ onSearch }) {
               </Link>
               <Link
                 to="/register"
-                className="rounded-lg bg-gradient-to-r from-zing-primary to-zing-secondary px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-lg hover:brightness-110"
+                className="hidden rounded-lg bg-gradient-to-r from-zing-primary to-zing-secondary px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-lg hover:brightness-110 sm:inline-flex"
               >
                 Đăng ký
               </Link>

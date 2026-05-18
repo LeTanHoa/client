@@ -23,13 +23,13 @@ export default function App() {
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/playlists/:id" element={<PlaylistDetail />} />
           <Route path="/favorites" element={<Favorites />} />
-          <Route element={<AdminRoute />}>
-            <Route path="/admin" element={<AdminDashboard />} />
-          </Route>
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+      <Route element={<AdminRoute />}>
+        <Route path="/admin" element={<AdminDashboard />} />
       </Route>
     </Routes>
   );

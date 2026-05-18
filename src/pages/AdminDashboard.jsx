@@ -31,15 +31,19 @@ function formatDate(value) {
 }
 
 function formatDuration(seconds) {
-  const n = Number(seconds || 0);
+  const n = Number(seconds);
+  if (!Number.isFinite(n) || n < 0) return '0:00';
   const minutes = Math.floor(n / 60);
   const remain = Math.floor(n % 60);
   return `${minutes}:${String(remain).padStart(2, '0')}`;
 }
 
+const formatTime = formatDuration;
+
 export function AdminDashboard() {
   const { isDark } = useTheme();
-  const { user } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
+  const [showMenu, setShowMenu] = useState(false);
 
   const [activeTab, setActiveTab] = useState('overview');
   const [overview, setOverview] = useState(emptyOverview);
@@ -69,23 +73,25 @@ export function AdminDashboard() {
   const [busyUserId, setBusyUserId] = useState(null);
   const [error, setError] = useState(null);
 
-  const panelClass = `rounded-lg border p-5 ${
-    isDark ? 'border-white/10 bg-[#151515]' : 'border-slate-200 bg-white'
-  }`;
+
+
+
+
+
+  const panelClass = `rounded-lg border p-5 ${isDark ? 'border-white/10 bg-[#151515]' : 'border-slate-200 bg-white'
+    }`;
   const surfaceClass = isDark
     ? 'border-white/10 bg-white/[0.03]'
     : 'border-slate-200 bg-slate-50';
   const mutedClass = isDark ? 'text-spotify-subtle' : 'text-slate-600';
-  const inputClass = `w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition focus:border-spotify-green ${
-    isDark
-      ? 'border-white/10 bg-black/30 text-white placeholder:text-slate-500'
-      : 'border-slate-300 bg-white text-slate-950 placeholder:text-slate-400'
-  }`;
-  const buttonGhostClass = `rounded-lg border px-3 py-2 text-sm font-semibold transition ${
-    isDark
-      ? 'border-white/10 text-white hover:border-white/25 hover:bg-white/5'
-      : 'border-slate-300 text-slate-800 hover:border-slate-400 hover:bg-slate-100'
-  }`;
+  const inputClass = `w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition focus:border-spotify-green ${isDark
+    ? 'border-white/10 bg-black/30 text-white placeholder:text-slate-500'
+    : 'border-slate-300 bg-white text-slate-950 placeholder:text-slate-400'
+    }`;
+  const buttonGhostClass = `rounded-lg border px-3 py-2 text-sm font-semibold transition ${isDark
+    ? 'border-white/10 text-white hover:border-white/25 hover:bg-white/5'
+    : 'border-slate-300 text-slate-800 hover:border-slate-400 hover:bg-slate-100'
+    }`;
 
   const loadAdminData = useCallback(async () => {
     setError(null);
@@ -150,6 +156,7 @@ export function AdminDashboard() {
       .sort((a, b) => b[1] - a[1])
       .slice(0, 6);
   }, [songs]);
+
 
   function startEdit(song) {
     setEditingSongId(song.id);
@@ -255,7 +262,6 @@ export function AdminDashboard() {
   function userIdFor(item) {
     return item._id || item.id;
   }
-
   const statCards = [
     { label: 'Người dùng', value: overview.users, detail: `${recentUsers.length} tài khoản mới nhất` },
     { label: 'Bài hát', value: overview.songs, detail: `${formatDuration(totalDuration)} tổng thời lượng đã tải` },
@@ -264,7 +270,7 @@ export function AdminDashboard() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-10">
       <section className={panelClass}>
         <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
           <div>
@@ -278,10 +284,72 @@ export function AdminDashboard() {
               Quản lý bài hát, upload nhạc, theo dõi người dùng, playlist và các chỉ số vận hành hiện có.
             </p>
           </div>
-          <div className={`rounded-lg border px-4 py-3 text-sm ${surfaceClass}`}>
+          {/* <div className={`rounded-lg border px-4 py-3 text-sm ${surfaceClass}`}>
             <div className={mutedClass}>Đang đăng nhập</div>
             <div className="mt-1 font-bold">{user?.username || user?.email || 'Admin'}</div>
-          </div>
+          </div> */}
+          {isAuthenticated ? (
+            <div className="relative">
+              <button
+                onClick={() => setShowMenu(!showMenu)}
+                className={`flex items-center gap-2 rounded-lg border px-3.5 py-2.5 text-sm font-medium transition-all duration-200 ${isDark
+                  ? 'bbg-black/30 border-white/10 text-white hover:bg-white/5'
+                  : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50'
+                  }`}
+              >
+                <span>👤</span>
+                <span className="hidden sm:inline">{user?.username || user?.email || 'Admin'}</span>
+              </button>
+
+              {showMenu && (
+                <div
+                  className={`absolute right-0 top-full mt-2 w-56 overflow-hidden rounded-lg border shadow-2xl backdrop-blur-sm ${isDark
+                    ? 'bg-black/95 border-white/10'
+                    : 'bg-white/95 border-slate-200'
+                    }`}
+                >
+                  <div className={`space-y-1 p-4 border-b ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+                    <p className={`text-sm font-semibold ${isDark ? 'text-zing-text' : 'text-slate-900'}`}>
+                      👤 {user?.username || user?.email || 'Admin'}
+                    </p>
+                    <p className={`text-xs ${isDark ? 'text-zing-text-tertiary' : 'text-slate-500'}`}>
+                      {user?.role === 'admin' ? '🔑 Quản trị viên' : '👥 Người dùng'}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setShowMenu(false);
+                    }}
+                    className={`w-full px-4 py-3 text-left text-sm font-medium transition-all duration-200 ${isDark
+                      ? 'text-zing-text-secondary hover:bg-white/5 hover:text-zing-pink'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                      }`}
+                  >
+                    🚪 Đăng xuất
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="hidden md:flex items-center gap-2">
+              <Link
+                to="/login"
+                className={`rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200 border ${isDark
+                  ? 'text-zing-text-secondary hover:text-zing-text hover:bg-white/5 border-transparent'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 border-transparent'
+                  }`}
+              >
+                Đăng nhập
+              </Link>
+              <Link
+                to="/register"
+                className="rounded-lg bg-gradient-to-r from-zing-primary to-zing-secondary px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-lg hover:brightness-110"
+              >
+                Đăng ký
+              </Link>
+            </div>
+          )}
         </div>
 
         <div className="mt-6 flex gap-2 overflow-x-auto pb-1">
@@ -290,13 +358,12 @@ export function AdminDashboard() {
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`shrink-0 rounded-lg px-4 py-2 text-sm font-bold transition ${
-                activeTab === tab.id
-                  ? 'bg-spotify-green text-black'
-                  : isDark
-                    ? 'bg-white/5 text-spotify-subtle hover:bg-white/10 hover:text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-950'
-              }`}
+              className={`shrink-0 rounded-lg px-4 py-2 text-sm font-bold transition ${activeTab === tab.id
+                ? 'bg-spotify-green text-black'
+                : isDark
+                  ? 'bg-white/5 text-spotify-subtle hover:bg-white/10 hover:text-white'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-950'
+                }`}
             >
               {tab.label}
             </button>
@@ -702,9 +769,8 @@ function TopSongsTable({ songs, isDark, mutedClass }) {
               <td className="py-3 pr-4 font-semibold">{song.title}</td>
               <td className={`py-3 pr-4 ${mutedClass}`}>{song.artist}</td>
               <td className="py-3 pr-4">
-                <span className={`rounded-md px-2 py-1 text-xs ${
-                  isDark ? 'bg-white/10 text-white' : 'bg-slate-200 text-slate-800'
-                }`}>
+                <span className={`rounded-md px-2 py-1 text-xs ${isDark ? 'bg-white/10 text-white' : 'bg-slate-200 text-slate-800'
+                  }`}>
                   {song.genre || 'Khác'}
                 </span>
               </td>
@@ -741,13 +807,12 @@ function SongTable({ songs, isDark, mutedClass, compact = false }) {
               <td className={`py-3 pr-4 ${mutedClass}`}>{song.artist}</td>
               {!compact && <td className={`py-3 pr-4 ${mutedClass}`}>{song.album || '-'}</td>}
               <td className="py-3 pr-4">
-                <span className={`rounded-md px-2 py-1 text-xs ${
-                  isDark ? 'bg-white/10 text-white' : 'bg-slate-200 text-slate-800'
-                }`}>
+                <span className={`rounded-md px-2 py-1 text-xs ${isDark ? 'bg-white/10 text-white' : 'bg-slate-200 text-slate-800'
+                  }`}>
                   {song.genre || 'Khác'}
                 </span>
               </td>
-              <td className={`py-3 pr-4 ${mutedClass}`}>{formatDuration(song.duration)}</td>
+              <td className={`py-3 pr-4 ${mutedClass}`}>{formatTime(song?.duration)}</td>
             </tr>
           ))}
         </tbody>

@@ -94,11 +94,11 @@ export function PlaylistDetail() {
 
   return (
     <div className="space-y-8">
-      <div className={`rounded-[2rem] border p-6 ${isDark ? 'bg-[#150f28] border-white/10' : 'bg-white border-slate-200'}`}>
+      <div className={`rounded-2xl border p-4 sm:p-6 ${isDark ? 'bg-[#150f28] border-white/10' : 'bg-white border-slate-200'}`}>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.35em] text-spotify-green">Playlist</p>
-            <h1 className="mt-3 text-4xl font-black">{playlist.name}</h1>
+            <h1 className="mt-3 break-words text-3xl font-black sm:text-4xl">{playlist.name}</h1>
             <p className={`mt-3 text-sm ${isDark ? 'text-spotify-subtle' : 'text-slate-600'}`}>
               {entries.length} bài hát trong danh sách
             </p>
@@ -124,7 +124,7 @@ export function PlaylistDetail() {
         </div>
       </div>
 
-      <div className="rounded-[2rem] border p-5 bg-gradient-to-br from-spotify-green/10 to-transparent text-slate-900">
+      <div className="rounded-2xl border bg-gradient-to-br from-spotify-green/10 to-transparent p-4 text-slate-900 sm:p-5">
         <p className="text-sm font-semibold text-spotify-green">Trong playlist này</p>
         <p className="mt-2 text-sm text-slate-700">Chọn bài để phát ngay, hoặc tiếp tục duyệt thêm track khác.</p>
       </div>
@@ -137,14 +137,14 @@ export function PlaylistDetail() {
           return (
             <div
               key={`${entry.songId}-${entry.orderIndex}`}
-              className={`flex flex-col gap-3 rounded-[1.75rem] border p-4 transition ${
+              className={`flex flex-col gap-3 rounded-2xl border p-3 transition sm:p-4 ${
                 isDark ? 'bg-[#110c1b] border-white/10 hover:border-white/20' : 'bg-white border-slate-200 hover:border-slate-300'
               } sm:flex-row sm:items-center`}
             >
               <img
                 src={coverUrlForSong(song.id)}
                 alt={song.title}
-                className={`w-full rounded-[1.5rem] object-cover sm:w-20 sm:h-20 ${isDark ? 'bg-[#1c1732]' : 'bg-slate-200'}`}
+                className={`aspect-square w-full rounded-xl object-cover sm:h-20 sm:w-20 ${isDark ? 'bg-[#1c1732]' : 'bg-slate-200'}`}
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
                 }}

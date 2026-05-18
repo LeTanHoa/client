@@ -67,10 +67,10 @@ export function AddToPlaylistModal({ songId, onClose }) {
   }
 
   return (
-    <div className={`fixed inset-0 flex items-center justify-center z-50 p-4 ${
+    <div className={`fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4 ${
       isDark ? 'bg-black/75' : 'bg-slate-200/70'
     }`}>
-      <div className={`w-full max-w-lg rounded-[2rem] border p-6 shadow-2xl ${
+      <div className={`max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border p-4 shadow-2xl sm:rounded-2xl sm:p-6 ${
         isDark ? 'bg-[#130f25] border-white/10' : 'bg-white border-slate-200'
       }`}>
         <div className="flex items-center justify-between gap-4 mb-6">

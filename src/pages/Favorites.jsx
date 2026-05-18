@@ -36,8 +36,8 @@ export function Favorites() {
 
   return (
     <div className="space-y-8">
-      <div className={`rounded-[2rem] border p-6 ${isDark ? 'bg-[#150f28] border-white/10' : 'bg-white border-slate-200'}`}>
-        <h1 className="text-3xl font-bold">Yêu thích</h1>
+      <div className={`rounded-2xl border p-4 sm:p-6 ${isDark ? 'bg-[#150f28] border-white/10' : 'bg-white border-slate-200'}`}>
+        <h1 className="text-2xl font-bold sm:text-3xl">Yêu thích</h1>
         <p className={`mt-2 ${isDark ? 'text-spotify-subtle' : 'text-slate-600'}`}>
           Nhạc bạn đã lưu bằng icon trái tim.
         </p>
@@ -48,17 +48,18 @@ export function Favorites() {
       {loading ? (
         <p className={isDark ? 'text-spotify-subtle' : 'text-slate-600'}>Đang tải…</p>
       ) : songs.length === 0 ? (
-        <div className={`rounded-[2rem] border p-6 ${isDark ? 'bg-[#110c1b] border-white/10' : 'bg-white border-slate-200'}`}>
+        <div className={`rounded-2xl border p-4 sm:p-6 ${isDark ? 'bg-[#110c1b] border-white/10' : 'bg-white border-slate-200'}`}>
           <p className={isDark ? 'text-spotify-subtle' : 'text-slate-600'}>
             Chưa có bài yêu thích. Nhấn trái tim trên bài hát để thêm.
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-5">
           {songs.map((song) => (
             <SongCard
               key={song.id}
               song={song}
+              mobileTile
               onPlay={playFrom(songs)}
               onAdd={setModalSong}
               isDark={isDark}

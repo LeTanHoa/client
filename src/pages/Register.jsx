@@ -28,8 +28,8 @@ export function Register() {
   }
 
   return (
-    <div className="mx-auto max-w-md px-4 py-8 sm:px-6">
-      <div className={`rounded-2xl border p-8 shadow-2xl ${isDark ? 'bg-zing-bg-panel border-white/10' : 'bg-white border-slate-200'}`}>
+    <div className="mx-auto max-w-md py-2 sm:px-6 sm:py-8">
+      <div className={`rounded-2xl border p-5 shadow-2xl sm:p-8 ${isDark ? 'bg-zing-bg-panel border-white/10' : 'bg-white border-slate-200'}`}>
         <div className="mb-8">
           <p className="text-xs uppercase tracking-widest font-bold text-zing-success">🎉 Tạo tài khoản</p>
           <h1 className="mt-4 text-3xl md:text-4xl font-black bg-gradient-to-r from-zing-primary to-zing-accent bg-clip-text text-transparent">
