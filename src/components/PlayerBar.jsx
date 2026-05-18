@@ -25,8 +25,8 @@ export function PlayerBar() {
   if (!current) {
     return (
       <div className={`fixed bottom-16 left-0 right-0 z-30 flex h-14 items-center justify-center border-t text-sm transition-colors duration-300 sm:bottom-20 sm:h-16 lg:bottom-0 lg:left-72 lg:h-28 ${isDark
-          ? 'bg-zing-bg border-white/10 text-zing-text-tertiary'
-          : 'bg-slate-100 border-slate-200 text-slate-600'
+        ? 'bg-zing-bg border-white/10 text-zing-text-tertiary'
+        : 'bg-slate-100 border-slate-200 text-slate-600'
         }`}>
         🎵 Chọn bài hát để bắt đầu nghe
       </div>
@@ -41,8 +41,8 @@ export function PlayerBar() {
 
   return (
     <div className={`fixed bottom-16 left-0 right-0 z-30 border-t backdrop-blur-xl transition-colors duration-300 sm:bottom-20 lg:bottom-0 lg:left-72 ${isDark
-        ? 'bg-zing-bg/95 border-white/10 shadow-[0_-16px_64px_rgba(0,0,0,0.4)]'
-        : 'bg-white/95 border-slate-200 shadow-[0_-16px_64px_rgba(15,23,42,0.08)]'
+      ? 'bg-zing-bg/95 border-white/10 shadow-[0_-16px_64px_rgba(0,0,0,0.4)]'
+      : 'bg-white/95 border-slate-200 shadow-[0_-16px_64px_rgba(15,23,42,0.08)]'
       }`}>
       <div className="mx-auto grid h-full max-w-[1600px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4 sm:py-3 lg:flex lg:gap-4 lg:px-6 lg:py-4">
         {/* Album Cover */}
@@ -67,15 +67,15 @@ export function PlayerBar() {
           </p>
         </div>
 
-        {/* Player Controls */}
-        <div className="flex items-center justify-end gap-1.5 sm:gap-2 lg:mt-3 lg:justify-start">
+        <div className='w-full flex flex-col gap-4'>
+          <div className="flex items-center justify-end gap-1.5 sm:gap-2 lg:mt-3 lg:justify-end">
             {/* Previous Button */}
             <button
               type="button"
               onClick={() => void playPreviousTrack()}
-              className={`hidden h-8 w-8 items-center justify-center rounded-lg transition sm:flex sm:h-10 sm:w-10 ${isDark
-                  ? 'bg-zing-bg-panel text-zing-text-secondary hover:bg-zing-bg-tertiary hover:text-zing-primary border border-white/10'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200'
+              className={` flex h-10 w-10 items-center justify-center rounded-full font-bold transition sm:h-11 sm:w-11 lg:rounded-lg ${isDark
+                ? 'bg-zing-bg-panel text-zing-text-secondary hover:bg-zing-bg-tertiary hover:text-zing-primary border border-white/10'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200'
                 }`}
               title="Bài trước"
               aria-label="Bài trước"
@@ -89,11 +89,11 @@ export function PlayerBar() {
             <button
               type="button"
               onClick={() => setShuffle((s) => !s)}
-              className={`hidden h-8 w-8 items-center justify-center rounded-lg border transition md:flex sm:h-10 sm:w-10 ${shuffle
-                  ? 'bg-gradient-to-r from-zing-primary to-zing-secondary text-white border-transparent shadow-md'
-                  : isDark
-                    ? 'bg-zing-bg-panel text-zing-text-secondary hover:bg-zing-bg-tertiary hover:text-zing-primary border-white/10'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200'
+              className={`flex h-10 w-10 items-center justify-center rounded-full font-bold transition sm:h-11 sm:w-11 lg:rounded-lg ${shuffle
+                ? 'bg-gradient-to-r from-zing-primary to-zing-secondary text-white border-transparent shadow-md'
+                : isDark
+                  ? 'bg-zing-bg-panel text-zing-text-secondary hover:bg-zing-bg-tertiary hover:text-zing-primary border-white/10'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200'
                 }`}
               title={shuffle ? 'Tắt shuffle' : 'Bật shuffle'}
               aria-pressed={shuffle}
@@ -107,9 +107,9 @@ export function PlayerBar() {
             <button
               type="button"
               onClick={() => void playRandomTrack()}
-              className={`hidden h-8 w-8 items-center justify-center rounded-lg border transition md:flex sm:h-10 sm:w-10 ${isDark
-                  ? 'bg-zing-bg-panel text-zing-text-secondary hover:bg-zing-bg-tertiary hover:text-zing-accent border-white/10'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200'
+              className={`flex h-10 w-10 items-center justify-center rounded-full font-bold transition sm:h-11 sm:w-11 lg:rounded-lg ${isDark
+                ? 'bg-zing-bg-panel text-zing-text-secondary hover:bg-zing-bg-tertiary hover:text-zing-accent border-white/10'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200'
                 }`}
               title="Phát ngẫu nhiên"
             >
@@ -123,9 +123,9 @@ export function PlayerBar() {
               type="button"
               onClick={() => void playNextTrack()}
               disabled={!canSkip}
-              className={`hidden h-8 w-8 items-center justify-center rounded-lg border transition disabled:pointer-events-none disabled:opacity-30 sm:flex sm:h-10 sm:w-10 ${isDark
-                  ? 'bg-zing-bg-panel text-zing-text-secondary hover:bg-zing-bg-tertiary hover:text-zing-primary border-white/10'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200'
+              className={`flex h-10 w-10 items-center justify-center  rounded-full  border transition disabled:pointer-events-none disabled:opacity-30 sm:flex sm:h-11 sm:w-11 ${isDark
+                ? 'bg-zing-bg-panel text-zing-text-secondary hover:bg-zing-bg-tertiary hover:text-zing-primary border-white/10'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200'
                 }`}
               title="Bài kế tiếp"
             >
@@ -139,8 +139,8 @@ export function PlayerBar() {
               type="button"
               onClick={() => void togglePlay()}
               className={`flex h-10 w-10 items-center justify-center rounded-full font-bold transition sm:h-11 sm:w-11 lg:rounded-lg ${isDark
-                  ? 'bg-gradient-to-r from-zing-primary to-zing-secondary text-white shadow-lg'
-                  : 'bg-gradient-to-r from-zing-primary to-zing-secondary text-white shadow-lg'
+                ? 'bg-gradient-to-r from-zing-primary to-zing-secondary text-white shadow-lg'
+                : 'bg-gradient-to-r from-zing-primary to-zing-secondary text-white shadow-lg'
                 }`}
               aria-label={playing ? 'Pause' : 'Play'}
             >
@@ -156,28 +156,37 @@ export function PlayerBar() {
             </button>
 
             {/* Time Display */}
-            <span className={`hidden w-10 text-right text-[11px] font-medium tabular-nums lg:inline-block lg:w-12 lg:text-xs ${isDark ? 'text-zing-text-secondary' : 'text-slate-500'
+
+          </div>
+          {/* Progress Slider */}
+          <div className=' w-full flex items-center justify-center gap-3'>
+
+            <span className={` w-7 text-left text-[11px] font-medium tabular-nums lg:inline-block lg:w-12 lg:text-xs ${isDark ? 'text-zing-text-secondary' : 'text-slate-500'
               }`}>
               {formatTime(currentTime)}
             </span>
+            <div className='w-full'>
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.001}
+                value={sliderValue}
+                onChange={(e) => seek(Number(e.target.value))}
+                className="seek col-span-3 h-1 w-full cursor-pointer lg:flex-1"
+              />
+            </div>
 
             {/* Duration Display */}
-            <span className={`hidden w-10 text-[11px] font-medium tabular-nums lg:inline-block lg:w-12 lg:text-xs ${isDark ? 'text-zing-text-secondary' : 'text-slate-500'
+            <span className={` w-7 text-[11px] text-right font-medium tabular-nums lg:inline-block lg:w-12 lg:text-xs ${isDark ? 'text-zing-text-secondary' : 'text-slate-500'
               }`}>
               {formatTime(duration)}
             </span>
+          </div>
         </div>
 
-        {/* Progress Slider */}
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.001}
-          value={sliderValue}
-          onChange={(e) => seek(Number(e.target.value))}
-          className="seek col-span-3 h-1 w-full cursor-pointer lg:flex-1"
-        />
+        {/* Player Controls */}
+
       </div>
     </div>
   );
