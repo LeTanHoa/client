@@ -196,12 +196,11 @@ export function Charts() {
         <div className="space-y-4">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-sm uppercase tracking-[0.35em] text-zing-primary">Danh sách bài hát</p>
+              <p className="text-sm uppercase tracking-[0.35em] text-zing-primary">Danh sách <strong className='text-white font-bold'>{chartSongs.length}</strong>  bài hát yêu thích</p>
             </div>
-            <p className="text-sm text-zing-text-secondary">Hiển thị top {chartSongs.length} bài của bảng xếp hạng</p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+          <div className="grid gap-4 grid-cols-2 xl:grid-cols-5">
             {chartSongs.map((song, index) => (
               <SongCard
                 key={song.id}
