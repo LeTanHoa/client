@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../api.js';
 import { usePlayer } from '../context/PlayerContext.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { AddToPlaylistModal } from '../components/AddToPlaylistModal.jsx';
 import { SongCard } from '../components/SongCard.jsx';
 
-export function Charts() {
+export function TopChartPanel() {
   const { isDark } = useTheme();
   const { playTrack } = usePlayer();
   const { isAuthenticated } = useAuth();
@@ -78,31 +78,11 @@ export function Charts() {
   }, [chartSongs, chartMaxPlays]);
 
   return (
-    <div className="space-y-8">
-      <div className={`rounded-2xl border p-4 sm:p-6 ${isDark ? 'bg-[#150f28] border-white/10' : 'bg-white border-slate-200'}`}>
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.35em] text-spotify-green">BXH</p>
-            <h1 className="mt-3 text-2xl font-black sm:text-3xl">Top nhạc thịnh hành</h1>
-            <p className={`mt-3 text-sm ${isDark ? 'text-spotify-subtle' : 'text-slate-600'}`}>
-              Những bài hát được nghe nhiều nhất trên hệ thống.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => navigate('/')}
-            className={`inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition ${
-              isDark ? 'bg-white/5 text-white hover:bg-white/10' : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
-            }`}
-          >
-            Về trang chủ
-          </button>
-        </div>
-      </div>
+    <div className="h-full">
+      
 
-      {/* Chart hiển thị BXH 7 bài hát từ dữ liệu top plays
       {!loading && !error && chartSongs.length > 0 && (
-        <div className={`rounded-[2rem] border p-6 ${isDark ? 'bg-zing-bg-secondary border-white/10' : 'bg-white border-slate-200'}`}>
+        <div className={`rounded-[1rem] border p-6 ${isDark ? '${panelClass} border-white/10' : 'bg-white border-slate-200'}`}>
           <div className="grid gap-6 xl:grid-cols-[380px_minmax(0,1fr)]">
             <div className="space-y-6 rounded-[1.75rem] border border-white/10 bg-zing-bg p-6 shadow-[0_25px_90px_-70px_rgba(0,0,0,0.8)]">
               <div className="flex items-start justify-between gap-4">
@@ -116,7 +96,7 @@ export function Charts() {
               </div>
 
               <div className="space-y-4">
-                {chartMetadata.slice(0, 3).map((song) => (
+                {chartMetadata.slice(0, 4).map((song) => (
                   <div key={song.id} className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4 shadow-sm backdrop-blur-sm">
                     <div className="flex items-start gap-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-white/10 text-xl font-bold text-white">
@@ -135,16 +115,19 @@ export function Charts() {
                 ))}
               </div>
 
-              <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4 text-center text-sm text-zing-text-secondary">
+              <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-2 text-center text-sm text-zing-text-secondary">
                 Dữ liệu từ lượt nghe hệ thống, cập nhật theo thời gian thực.
               </div>
 
-              <button
-                type="button"
+<div>
+    
+              <Link
+                to="/charts"
                 className="w-full rounded-full border border-zing-primary/40 bg-zing-primary/10 px-5 py-3 text-sm font-semibold text-zing-primary transition hover:bg-zing-primary/20"
               >
                 Xem thêm
-              </button>
+              </Link>
+    </div>
             </div>
 
             <div className="rounded-[1.75rem] bg-gradient-to-br from-[#0e1126] via-[#170f33] to-[#170f33] p-6 shadow-[0_25px_90px_-70px_rgba(0,0,0,0.8)]">
@@ -190,51 +173,10 @@ export function Charts() {
             </div>
           </div>
         </div>
-      )} */}
-
-      {!loading && !error && chartSongs.length > 0 && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="text-sm uppercase tracking-[0.35em] text-zing-primary">Danh sách bài hát</p>
-            </div>
-            <p className="text-sm text-zing-text-secondary">Hiển thị top {chartSongs.length} bài của bảng xếp hạng</p>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-            {chartSongs.map((song, index) => (
-              <SongCard
-                key={song.id}
-                song={song}
-                badge={`#${index + 1}`}
-                mobileTile
-                onPlay={playFrom(chartSongs)}
-                onAdd={(picked) => {
-                  if (!isAuthenticated) {
-                    navigate('/login');
-                    return;
-                  }
-                  setModalSong(picked);
-                }}
-              />
-            ))}
-          </div>
-        </div>
       )}
 
-      {loading ? (
-        <p className={isDark ? 'text-spotify-subtle' : 'text-slate-600'}>Đang tải BXH…</p>
-      ) : error ? (
-        <p className="text-red-400">{error}</p>
-      ) : songs.length === 0 ? (
-        <div className={`rounded-2xl border p-4 sm:p-6 ${isDark ? 'bg-[#110c1b] border-white/10' : 'bg-white border-slate-200'}`}>
-          <p className={isDark ? 'text-spotify-subtle' : 'text-slate-600'}>
-            Chưa có đủ dữ liệu để hiển thị BXH. Hãy phát nhiều bài hơn để cập nhật.
-          </p>
-        </div>
-      ) : null}
+    
 
-      {modalSong && <AddToPlaylistModal songId={modalSong.id} onClose={() => setModalSong(null)} />}
     </div>
   );
 }

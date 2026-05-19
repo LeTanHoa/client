@@ -14,7 +14,7 @@ export function SongCard({ song, onPlay, onAdd, badge, mobileTile = false }) {
       }`}
     >
       {badge ? (
-        <span className="absolute left-3 top-3 z-10 rounded-full bg-gradient-to-r from-zing-pink to-zing-orange px-3 py-1 text-[10px] font-bold text-white shadow-lg">
+        <span className="absolute left-3 bottom-32 z-10 rounded-full bg-gradient-to-r from-zing-pink to-zing-orange px-3 py-1 text-[10px] font-bold text-white shadow-lg">
           {badge}
         </span>
       ) : null}

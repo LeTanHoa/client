@@ -7,6 +7,8 @@ import { SongCard } from '../components/SongCard.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { VIETNAMESE_MUSIC_GENRES } from '../constants/genres.js';
 import { useNavigate } from 'react-router-dom';
+import { Charts } from './Charts.jsx';
+import { TopChartPanel } from '../components/TopChartPanel.jsx';
 
 export function Home() {
   const { isDark } = useTheme();
@@ -122,214 +124,99 @@ export function Home() {
       </section>
 
       {/* Two Column Layout */}
-      <section className="grid gap-5 overflow-hidden lg:grid-cols-3">
-        {/* Recommended */}
-        {recommended.length > 0 && (
-          <div
-            className={`w-full max-w-full overflow-hidden rounded-2xl border p-4 sm:p-5 lg:col-span-2 ${panelClass}`}
-          >
-            {/* Header */}
-            <div className="mb-4 flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <h2 className="text-xl font-bold sm:text-2xl">
-                  🎁 Gợi ý hôm nay
-                </h2>
-
-                <p
-                  className={`mt-1 text-xs sm:text-sm ${isDark
-                      ? 'text-zing-text-tertiary'
-                      : 'text-slate-500'
-                    }`}
-                >
-                  Những bài hát đặc biệt dành cho bạn
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => load(search, genreFilter)}
-                className={`shrink-0 rounded-xl border px-3 py-2 text-xs font-bold transition-all active:scale-95 ${isDark
-                    ? 'border-white/10 bg-zing-bg-tertiary text-zing-success hover:bg-zing-primary/20'
-                    : 'border-slate-200 bg-slate-100 text-zing-primary hover:bg-zing-primary/10'
-                  }`}
+      <section className="flex flex-col lg:flex-row gap-5">
+            <div className='flex flex-col lg:flex-row w-full lg:w-[30%]' >
+          {isAuthenticated && recent.length > 0 && (
+              <div
+                className={`w-full h-full  max-w-full overflow-hidden rounded-2xl border p-4 sm:p-5 ${panelClass}`}
               >
-                🔄
-              </button>
-            </div>
+                {/* Header */}
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <h3 className="truncate text-lg font-bold sm:text-xl">
+                      ⏰ Bạn vừa nghe
+                    </h3>
 
-            {/* Song List */}
-            <div className="grid gap-3 sm:grid-cols-2">
-              {recommended.slice(0, 4).map((song, index) => (
-                <article
-                  key={song.id}
-                  className={`w-full max-w-full overflow-hidden rounded-2xl border p-3 transition-all duration-200 active:scale-[0.98] ${rowCardClass}`}
-                >
-                  <div className="flex items-center gap-3 overflow-hidden">
-                    {/* Cover */}
-                    <div className="relative shrink-0">
+                    <p
+                      className={`mt-1 text-xs ${isDark
+                          ? 'text-zing-text-tertiary'
+                          : 'text-slate-500'
+                        }`}
+                    >
+                      Lịch sử gần đây
+                    </p>
+                  </div>
+
+                  <span
+                    className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-bold ${isDark
+                        ? 'bg-white/10 text-zing-success'
+                        : 'bg-slate-100 text-slate-600'
+                      }`}
+                  >
+                    {recent.length}
+                  </span>
+                </div>
+
+                {/* Recent List */}
+                <div className="space-y-3">
+                  {recent.slice(0, 6).map((song) => (
+                    <article
+                      key={song.id}
+                      className={`group flex items-center gap-3 overflow-hidden rounded-2xl border p-3 transition-all duration-200 active:scale-[0.98] ${rowCardClass}`}
+                    >
+                      {/* Cover */}
                       <img
                         src={coverUrlForSong(song.id)}
                         alt={song.title}
-                        className="h-16 w-16 rounded-xl object-cover sm:h-20 sm:w-20"
+                        className="h-14 w-14 shrink-0 rounded-xl object-cover"
                         onError={(e) => {
                           e.currentTarget.style.opacity = 0;
                         }}
                       />
 
-                      <span className="absolute left-1 top-1 rounded-md bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-white">
-                        #{index + 1}
-                      </span>
-                    </div>
+                      {/* Content */}
+                      <div className="min-w-0 flex-1 overflow-hidden">
+                        <h4 className="line-clamp-2 text-sm font-bold leading-snug">
+                          {song.title}
+                        </h4>
 
-                    {/* Content */}
-                    <div className="min-w-0 flex-1 overflow-hidden">
-                      <h3 className="line-clamp-2 text-sm font-bold leading-snug sm:text-base">
-                        {song.title}
-                      </h3>
-
-                      <p
-                        className={`mt-1 truncate text-xs sm:text-sm ${isDark
-                            ? 'text-zing-text-tertiary'
-                            : 'text-slate-500'
-                          }`}
-                      >
-                        {song.artist}
-                      </p>
-
-                      {song.genre && (
-                        <span
-                          className={`mt-2 inline-flex max-w-full truncate rounded-full px-2 py-1 text-[10px] font-semibold ${isDark
-                              ? 'bg-white/10 text-zing-success'
-                              : 'bg-zing-primary/10 text-zing-primary'
+                        <p
+                          className={`mt-1 truncate text-xs ${isDark
+                              ? 'text-zing-text-tertiary'
+                              : 'text-slate-500'
                             }`}
                         >
-                          {song.genre}
-                        </span>
-                      )}
-                    </div>
+                          {song.artist}
+                        </p>
+                      </div>
 
-                    {/* Play */}
-                    <button
-                      type="button"
-                      onClick={() =>
-                        playTrack(song, { queue: recommended })
-                      }
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-zing-primary to-zing-secondary text-white shadow-lg transition active:scale-95"
-                      aria-label="Phát"
-                    >
-                      ▶
-                    </button>
-                  </div>
-
-                  {/* Playlist Button */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (!isAuthenticated) {
-                        navigate('/login');
-                        return;
-                      }
-
-                      setModalSong(song);
-                    }}
-                    className={`mt-3 w-full rounded-xl border py-2 text-xs font-semibold transition-all active:scale-[0.98] ${isDark
-                        ? 'border-white/10 text-zing-text-secondary hover:bg-white/5'
-                        : 'border-slate-200 text-slate-700 hover:bg-slate-50'
-                      }`}
-                  >
-                    + Thêm vào playlist
-                  </button>
-                </article>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Recent */}
-        {isAuthenticated && recent.length > 0 && (
-          <div
-            className={`w-full max-w-full overflow-hidden rounded-2xl border p-4 sm:p-5 ${panelClass}`}
-          >
-            {/* Header */}
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <div className="min-w-0">
-                <h3 className="truncate text-lg font-bold sm:text-xl">
-                  ⏰ Bạn vừa nghe
-                </h3>
-
-                <p
-                  className={`mt-1 text-xs ${isDark
-                      ? 'text-zing-text-tertiary'
-                      : 'text-slate-500'
-                    }`}
-                >
-                  Lịch sử gần đây
-                </p>
+                      {/* Play */}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          playTrack(song, { queue: recent })
+                        }
+                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all active:scale-95 ${isDark
+                            ? 'bg-white/10 text-white hover:bg-zing-primary'
+                            : 'bg-white text-slate-700 shadow hover:bg-zing-primary hover:text-white'
+                          }`}
+                        aria-label="Phát"
+                      >
+                        ▶
+                      </button>
+                    </article>
+                  ))}
+                </div>
               </div>
-
-              <span
-                className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-bold ${isDark
-                    ? 'bg-white/10 text-zing-success'
-                    : 'bg-slate-100 text-slate-600'
-                  }`}
-              >
-                {recent.length}
-              </span>
-            </div>
-
-            {/* Recent List */}
-            <div className="space-y-3">
-              {recent.slice(0, 6).map((song) => (
-                <article
-                  key={song.id}
-                  className={`group flex items-center gap-3 overflow-hidden rounded-2xl border p-3 transition-all duration-200 active:scale-[0.98] ${rowCardClass}`}
-                >
-                  {/* Cover */}
-                  <img
-                    src={coverUrlForSong(song.id)}
-                    alt={song.title}
-                    className="h-14 w-14 shrink-0 rounded-xl object-cover"
-                    onError={(e) => {
-                      e.currentTarget.style.opacity = 0;
-                    }}
-                  />
-
-                  {/* Content */}
-                  <div className="min-w-0 flex-1 overflow-hidden">
-                    <h4 className="line-clamp-2 text-sm font-bold leading-snug">
-                      {song.title}
-                    </h4>
-
-                    <p
-                      className={`mt-1 truncate text-xs ${isDark
-                          ? 'text-zing-text-tertiary'
-                          : 'text-slate-500'
-                        }`}
-                    >
-                      {song.artist}
-                    </p>
-                  </div>
-
-                  {/* Play */}
-                  <button
-                    type="button"
-                    onClick={() =>
-                      playTrack(song, { queue: recent })
-                    }
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all active:scale-95 ${isDark
-                        ? 'bg-white/10 text-white hover:bg-zing-primary'
-                        : 'bg-white text-slate-700 shadow hover:bg-zing-primary hover:text-white'
-                      }`}
-                    aria-label="Phát"
-                  >
-                    ▶
-                  </button>
-                </article>
-              ))}
-            </div>
-          </div>
-        )}
+            )}
+        </div>
+        <div className={`h-full w-full lg:w-[70%] `}  >
+           <TopChartPanel/>
+        </div>
       </section>
+
+        
+      {/* ở đây */}
 
       {/* Main Songs Section */}
       <section ref={sectionRef} className={`rounded-2xl border p-4 sm:p-6 md:p-8 ${isDark ? 'bg-zing-bg-panel border-white/10' : 'bg-white border-slate-200'}`}>
