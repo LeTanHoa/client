@@ -11,7 +11,6 @@ export function Playlists() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
-
   async function refresh() {
     const data = await api('/playlist');
     setPlaylists(data.playlists || []);

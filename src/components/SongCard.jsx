@@ -34,9 +34,26 @@ export function SongCard({ song, onPlay, onAdd, badge, mobileTile = false }) {
         <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/70 via-black/30 to-transparent sm:h-24" />
 
         {/* Favorite Button */}
-        <div className="absolute top-2 right-2 z-10 sm:top-2.5 sm:right-2.5">
-          <FavoriteHeart songId={song.id} className="bg-black/50 text-white backdrop-blur-sm rounded-full" />
+          <div className="absolute top-2 right-2 z-20 sm:top-2.5 sm:right-2.5">
+            <FavoriteHeart songId={song.id} className="bg-black/50 text-white backdrop-blur-sm rounded-full" />
+          </div>
+        <div className="absolute top-2 left-2 z-10 sm:top-2.5 sm:right-2.5">
+          {onAdd ? (
+                      <button
+                        type="button"
+                        onClick={() => onAdd(song)}
+                        className={`rounded-full bg-black/50 px-2.5 text-white backdrop-blur-sm py-2 text-[10px] font-medium transition-all duration-200 border sm:px-3 sm:py-1.5 sm:text-[11px] ${
+                          isDark
+                            ? 'border-white/20 text-zing-text-secondary hover:border-zing-primary/50 hover:text-zing-primary hover:bg-white/5'
+                            : 'border-slate-200 text-slate-600 hover:border-zing-primary hover:text-zing-primary hover:bg-zing-primary/5'
+                        }`}
+                      >
+                        +
+                      </button>
+                    ) : null}
+
         </div>
+    
 
         {/* Play Button */}
         <button
@@ -74,27 +91,15 @@ export function SongCard({ song, onPlay, onAdd, badge, mobileTile = false }) {
 
         {/* Actions */}
         <div className={`mt-1 flex flex-wrap items-center gap-1.5 sm:mt-3 sm:gap-2 ${mobileTile ? 'justify-between' : ''}`}>
-          <button
+          {/* <button
             type="button"
             onClick={() => onPlay(song)}
             className="rounded-lg bg-gradient-to-r from-zing-primary to-zing-secondary px-2.5 py-2 text-[10px] font-bold text-white shadow-md transition-all duration-200 hover:shadow-lg hover:brightness-110 sm:px-3 sm:py-1.5 sm:text-[11px]"
           >
             ▶ Phát
-          </button>
+          </button> */}
 
-          {onAdd ? (
-            <button
-              type="button"
-              onClick={() => onAdd(song)}
-              className={`rounded-lg px-2.5 py-2 text-[10px] font-medium transition-all duration-200 border sm:px-3 sm:py-1.5 sm:text-[11px] ${
-                isDark
-                  ? 'border-white/20 text-zing-text-secondary hover:border-zing-primary/50 hover:text-zing-primary hover:bg-white/5'
-                  : 'border-slate-200 text-slate-600 hover:border-zing-primary hover:text-zing-primary hover:bg-zing-primary/5'
-              }`}
-            >
-              + Playlist
-            </button>
-          ) : null}
+      
         </div>
       </div>
     </article>

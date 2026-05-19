@@ -103,6 +103,29 @@ export function PlayerBar() {
               </svg>
             </button>
 
+
+{/* Play/Pause Button */}
+            <button
+              type="button"
+              onClick={() => void togglePlay()}
+              className={`flex h-10 w-10 items-center justify-center rounded-full font-bold transition sm:h-11 sm:w-11 lg:rounded-lg ${isDark
+                ? 'bg-gradient-to-r from-zing-primary to-zing-secondary text-white shadow-lg'
+                : 'bg-gradient-to-r  from-zing-primary to-zing-secondary text-white shadow-lg'
+                }`}
+              aria-label={playing ? 'Pause' : 'Play'}
+            >
+              {playing ? (
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              )}
+            </button> 
+
+
             {/* Random Button */}
             <button
               type="button"
@@ -134,26 +157,7 @@ export function PlayerBar() {
               </svg>
             </button>
 
-            {/* Play/Pause Button */}
-            <button
-              type="button"
-              onClick={() => void togglePlay()}
-              className={`flex h-10 w-10 items-center justify-center rounded-full font-bold transition sm:h-11 sm:w-11 lg:rounded-lg ${isDark
-                ? 'bg-gradient-to-r from-zing-primary to-zing-secondary text-white shadow-lg'
-                : 'bg-gradient-to-r from-zing-primary to-zing-secondary text-white shadow-lg'
-                }`}
-              aria-label={playing ? 'Pause' : 'Play'}
-            >
-              {playing ? (
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                </svg>
-              ) : (
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              )}
-            </button>
+            
 
             {/* Time Display */}
 

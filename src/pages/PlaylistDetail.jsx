@@ -5,6 +5,7 @@ import { api, coverUrlForSong } from '../api.js';
 
 import { usePlayer } from '../context/PlayerContext.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
+import { SongCard } from '../components/SongCard.jsx';
 
 import { FavoriteHeart } from '../components/FavoriteHeart.jsx';
 
@@ -129,56 +130,28 @@ export function PlaylistDetail() {
         <p className="mt-2 text-sm text-slate-700">Chọn bài để phát ngay, hoặc tiếp tục duyệt thêm track khác.</p>
       </div>
 
-      <div className="space-y-3">
+      <div className="grid grid-cols-5 gap-4  lg:grid-cols-5">
         {entries.map((entry) => {
           const song = entry.song;
           if (!song) return null;
 
           return (
-            <div
+            <SongCard
               key={`${entry.songId}-${entry.orderIndex}`}
-              className={`flex flex-col gap-3 rounded-2xl border p-3 transition sm:p-4 ${
-                isDark ? 'bg-[#110c1b] border-white/10 hover:border-white/20' : 'bg-white border-slate-200 hover:border-slate-300'
-              } sm:flex-row sm:items-center`}
-            >
-              <img
-                src={coverUrlForSong(song.id)}
-                alt={song.title}
-                className={`aspect-square w-full rounded-xl object-cover sm:h-20 sm:w-20 ${isDark ? 'bg-[#1c1732]' : 'bg-slate-200'}`}
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
-              <div className="flex-1 min-w-0">
-                <div className="text-lg font-semibold truncate">{song.title}</div>
-                <p className={`mt-1 text-sm truncate ${isDark ? 'text-spotify-subtle' : 'text-slate-600'}`}>
-                  {song.artist}
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <FavoriteHeart songId={song.id} size="sm" />
-                <button
-                  type="button"
-                  onClick={() =>
-                    playTrack(
-                      {
-                        id: song.id,
-                        title: song.title,
-                        artist: song.artist,
-                        duration: song.duration,
-                        ...(song.youtubeId ? { youtubeId: song.youtubeId } : {}),
-                      },
-                      {
-                        queue: queueTracks,
-                      }
-                    )
-                  }
-                  className="rounded-full bg-spotify-green px-4 py-2 text-sm font-semibold text-black transition hover:brightness-110"
-                >
-                  Phát
-                </button>
-              </div>
-            </div>
+              song={song}
+              onPlay={(songToPlay) =>
+                playTrack(
+                  {
+                    id: songToPlay.id,
+                    title: songToPlay.title,
+                    artist: songToPlay.artist,
+                    duration: songToPlay.duration,
+                    ...(songToPlay.youtubeId ? { youtubeId: songToPlay.youtubeId } : {}),
+                  },
+                  { queue: queueTracks }
+                )
+              }
+            />
           );
         })}
       </div>
