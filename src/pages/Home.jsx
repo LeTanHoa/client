@@ -9,6 +9,8 @@ import { VIETNAMESE_MUSIC_GENRES } from '../constants/genres.js';
 import { useNavigate } from 'react-router-dom';
 import { Charts } from './Charts.jsx';
 import { TopChartPanel } from '../components/TopChartPanel.jsx';
+import { SingerCarousel } from '../components/SingerCarousel.jsx';
+import { ContentSection } from '../components/ContentSection.jsx';
 
 export function Home() {
   const { isDark } = useTheme();
@@ -27,6 +29,21 @@ export function Home() {
   const [error, setError] = useState(null);
   const { user, isAuthenticated } = useAuth();
 
+  // New states for enhanced sections
+  const [trendingSongs, setTrendingSongs] = useState([]);
+  const [newSongs, setNewSongs] = useState([]);
+  const [singers, setSingers] = useState([]);
+  const [loadingNew, setLoadingNew] = useState(false);
+
+
+  const normalizeText = (text) => {
+  return decodeURIComponent(text)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // bỏ dấu
+    .replace(/\s+/g, "") // bỏ khoảng trắng
+    .trim();
+};
   const load = useCallback(async (q, genre) => {
     setError(null);
     setLoading(true);
@@ -50,6 +67,43 @@ export function Home() {
     }
   }, [isAuthenticated]);
 
+  // Load additional content sections
+  const loadAdditionalContent = useCallback(async () => {
+    setLoadingNew(true);
+    try {
+      const tasks = [
+        api('/history/top?limit=12').catch(() => ({ songs: [] })),
+        api('/songs?limit=12').catch(() => ({ songs: [] })),
+      ];
+      const [trendRes, newRes] = await Promise.all(tasks);
+      setTrendingSongs(trendRes.songs || []);
+      setNewSongs(newRes.songs || []);
+
+      // Extract unique artists from all songs
+      const allSongs = [...(songs || []), ...(trendRes.songs || []), ...(newRes.songs || [])];
+      const artistMap = new Map();
+      allSongs.forEach((song) => {
+        if (song.artist) {
+          artistMap.set(song.artist, (artistMap.get(song.artist) || 0) + 1);
+        }
+      });
+      
+      const uniqueSingers = Array.from(artistMap.entries())
+        .map(([artist, count]) => ({
+          artist,
+          songCount: count,
+        }))
+        .sort((a, b) => b.songCount - a.songCount)
+        .slice(0, 12);
+
+      setSingers(uniqueSingers);
+    } catch (e) {
+      console.error('Error loading additional content:', e);
+    } finally {
+      setLoadingNew(false);
+    }
+  }, [songs]);
+
   const scrollToSection = () => {
     sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -58,6 +112,10 @@ export function Home() {
     const timer = setTimeout(() => load(search, genreFilter), search ? 300 : 0);
     return () => clearTimeout(timer);
   }, [search, genreFilter, load]);
+
+  useEffect(() => {
+    loadAdditionalContent();
+  }, [loadAdditionalContent]);
 
   const featured = recommended.length > 0 ? recommended.slice(0, 4) : recent.slice(0, 4);
   const panelClass = isDark
@@ -214,6 +272,69 @@ export function Home() {
            <TopChartPanel/>
         </div>
       </section>
+
+      {/* Featured Singers Section */}
+      <SingerCarousel
+        title="🎤 Ca sĩ nổi bật"
+        singers={singers}
+        loading={loadingNew}
+        onSingerClick={(singer) => {
+          navigate(`/singers/${encodeURIComponent(singer.artist)}`);
+        }}
+      />
+
+      {/* Trending This Week Section */}
+      <ContentSection
+        title="🔥 Xu hướng tuần này"
+        subtitle="Những bài hát được nghe nhiều nhất"
+        items={trendingSongs}
+        loading={loadingNew}
+        itemType="song"
+        onItemPlay={playFrom(trendingSongs)}
+        onItemAdd={(picked) => {
+          if (!isAuthenticated) {
+            navigate('/login');
+            return;
+          }
+          setModalSong(picked);
+        }}
+        gridCols="grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5"
+      />
+
+      {/* New Releases Section */}
+      <ContentSection
+        title="✨ Phát hành mới"
+        subtitle="Những bài hát mới được thêm vào"
+        items={newSongs}
+        loading={loadingNew}
+        itemType="song"
+        onItemPlay={playFrom(newSongs)}
+        onItemAdd={(picked) => {
+          if (!isAuthenticated) {
+            navigate('/login');
+            return;
+          }
+          setModalSong(picked);
+        }}
+        gridCols="grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5"
+      />
+
+      {/* For You Personalized Section - Only for authenticated users */}
+      {isAuthenticated && recommended.length > 0 && (
+        <ContentSection
+          title="💝 Dành cho bạn"
+          subtitle="Những bài hát được đề xuất dành riêng cho bạn"
+          items={recommended}
+          loading={loading}
+          itemType="song"
+          onItemPlay={playFrom(recommended)}
+          onItemAdd={(picked) => {
+            setModalSong(picked);
+          }}
+          gridCols="grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5"
+          emptyMessage="Không có đề xuất"
+        />
+      )}
 
         
       {/* ở đây */}

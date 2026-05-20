@@ -10,6 +10,7 @@ import { PlaylistDetail } from './pages/PlaylistDetail.jsx';
 import { Favorites } from './pages/Favorites.jsx';
 import { Search } from './pages/Search.jsx';
 import { Charts } from './pages/Charts.jsx';
+import { SingerDetail } from './pages/SingerDetail.jsx';
 import { AdminDashboard } from './pages/AdminDashboard.jsx';
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
         <Route path="/charts" element={<Charts />} />
+        <Route path="/singers/:artist" element={<SingerDetail />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/playlists/:id" element={<PlaylistDetail />} />

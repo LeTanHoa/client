@@ -67,3 +67,38 @@ export function coverUrlForSong(songId) {
   const q = token ? `?token=${encodeURIComponent(token)}` : '';
   return `${API_BASE}/stream/cover/${songId}${q}`;
 }
+
+/** Fetch all singers/artists with optional limit and search */
+export async function getSingers(limit = 12, search = '') {
+  const params = new URLSearchParams();
+  if (limit) params.set('limit', limit);
+  if (search) params.set('search', search);
+  const qs = params.toString() ? `?${params.toString()}` : '';
+  return api(`/singers${qs}`);
+}
+
+/** Fetch songs by a specific artist */
+export async function getSongsByArtist(artistName, limit = 50) {
+  const params = new URLSearchParams();
+  params.set('artist', artistName);
+  if (limit) params.set('limit', limit);
+  return api(`/songs?${params.toString()}`);
+}
+
+/** Fetch trending/popular songs */
+export async function getTrendingSongs(limit = 12) {
+  return api(`/history/top?limit=${limit}`);
+}
+
+/** Fetch new/latest songs */
+export async function getNewSongs(limit = 12) {
+  const params = new URLSearchParams();
+  params.set('sort', 'latest');
+  if (limit) params.set('limit', limit);
+  return api(`/songs?${params.toString()}`);
+}
+
+/** Get all unique artists with their song counts */
+export async function getArtistsWithStats() {
+  return api('/artists/stats');
+}
