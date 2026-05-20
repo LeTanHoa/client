@@ -78,14 +78,14 @@ export function SingerCard({ artist, songCount = 0, onClick, imageUrl }) {
 
       {/* Content Section */}
       <div className="flex-1 flex flex-col justify-between space-y-2 p-3 sm:p-4">
-        <div className="min-w-0">
+        {/* <div className="min-w-0">
           <h3 className="line-clamp-2 text-sm font-bold leading-snug">{artist}</h3>
           <p
             className={`mt-1 text-xs ${isDark ? 'text-zing-text-tertiary' : 'text-slate-500'}`}
           >
             {songCount} bài hát
           </p>
-        </div>
+        </div> */}
 
         {/* View Button */}
         <button

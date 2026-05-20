@@ -42,7 +42,7 @@ export function SongCard({ song, onPlay, onAdd, badge, mobileTile = false }) {
                       <button
                         type="button"
                         onClick={() => onAdd(song)}
-                        className={`rounded-full bg-black/50 px-2.5 text-white backdrop-blur-sm py-2 text-[10px] font-medium transition-all duration-200 border sm:px-3 sm:py-1.5 sm:text-[11px] ${
+                        className={`rounded-full w-8 h-8 inline-flex items-center justify-center   bg-black/50  text-white backdrop-blur-sm   text-[10px] font-medium transition-all duration-200 border  sm:text-[11px] ${
                           isDark
                             ? 'border-white/20 text-zing-text-secondary hover:border-zing-primary/50 hover:text-zing-primary hover:bg-white/5'
                             : 'border-slate-200 text-slate-600 hover:border-zing-primary hover:text-zing-primary hover:bg-zing-primary/5'
