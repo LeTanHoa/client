@@ -111,7 +111,7 @@ export function SingerDetail() {
             </div>
             <h1 className="text-3xl md:text-5xl font-black truncate">{decodedArtist}</h1>
             <p className={`mt-3 text-base md:text-lg ${isDark ? 'text-zing-text-secondary' : 'text-slate-600'}`}>
-              {songs.length} bài hát
+              {filterSongsByArtist?.length} bài hát
             </p>
 
             {/* Action Buttons */}

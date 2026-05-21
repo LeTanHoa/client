@@ -78,14 +78,14 @@ export function SingerCard({ artist, songCount = 0, onClick, imageUrl }) {
 
       {/* Content Section */}
       <div className="flex-1 flex flex-col justify-between space-y-2 p-3 sm:p-4">
-        {/* <div className="min-w-0">
+        <div className="min-w-0">
           <h3 className="line-clamp-2 text-sm font-bold leading-snug">{artist}</h3>
-          <p
+          {/* <p
             className={`mt-1 text-xs ${isDark ? 'text-zing-text-tertiary' : 'text-slate-500'}`}
           >
             {songCount} bài hát
-          </p>
-        </div> */}
+          </p> */}
+        </div>
 
         {/* View Button */}
         <button
@@ -93,7 +93,7 @@ export function SingerCard({ artist, songCount = 0, onClick, imageUrl }) {
           onClick={handleClick}
           className="rounded-lg bg-gradient-to-r from-zing-primary to-zing-secondary px-3 py-2 text-xs font-bold text-white shadow-md transition-all duration-200 hover:shadow-lg hover:brightness-110 active:scale-95"
         >
-          Xem tất cả
+          Xem thêm
         </button>
       </div>
     </article>

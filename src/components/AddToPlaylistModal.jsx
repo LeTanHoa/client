@@ -67,12 +67,10 @@ export function AddToPlaylistModal({ songId, onClose }) {
   }
 
   return (
-    <div className={`fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4 ${
-      isDark ? 'bg-black/75' : 'bg-slate-200/70'
-    }`}>
-      <div className={`max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border p-4 shadow-2xl sm:rounded-2xl sm:p-6 ${
-        isDark ? 'bg-[#130f25] border-white/10' : 'bg-white border-slate-200'
+    <div className={`fixed inset-0  z-50 flex items-end justify-center p-0 sm:items-center sm:p-4 ${isDark ? 'bg-black/75' : 'bg-slate-200/70'
       }`}>
+      <div className={`max-h-[90vh] absolute top-32 lg:static lg:top-auto  w-[95%] max-w-lg overflow-y-auto rounded-2xl border p-4 shadow-2xl sm:rounded-2xl sm:p-6 ${isDark ? 'bg-[#130f25] border-white/10' : 'bg-white border-slate-200'
+        }`}>
         <div className="flex items-center justify-between gap-4 mb-6">
           <div>
             <h2 className="text-xl font-semibold">Thêm vào playlist</h2>
@@ -83,11 +81,10 @@ export function AddToPlaylistModal({ songId, onClose }) {
           <button
             type="button"
             onClick={onClose}
-            className={`rounded-full px-3 py-2 text-sm transition ${
-              isDark ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
-            }`}
+            className={`rounded-full px-3 py-2 text-sm transition ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
+              }`}
           >
-            Đóng
+            X
           </button>
         </div>
 
@@ -103,11 +100,10 @@ export function AddToPlaylistModal({ songId, onClose }) {
                   type="button"
                   disabled={busy}
                   onClick={() => addTo(p.id)}
-                  className={`w-full rounded-3xl border px-4 py-3 text-left text-sm transition ${
-                    isDark
+                  className={`w-full rounded-3xl border px-4 py-3 text-left text-sm transition ${isDark
                       ? 'border-white/10 bg-[#110c1b] text-white hover:bg-white/5'
                       : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100'
-                  }`}
+                    }`}
                 >
                   <span className="font-medium">{p.name}</span>
                   <span className={`ml-2 text-xs ${isDark ? 'text-spotify-subtle' : 'text-slate-500'}`}>
@@ -126,11 +122,10 @@ export function AddToPlaylistModal({ songId, onClose }) {
 
         <div className="flex flex-col gap-3">
           <input
-            className={`w-full rounded-3xl border px-4 py-3 text-sm outline-none transition ${
-              isDark
+            className={`w-full rounded-3xl border px-4 py-3 text-sm outline-none transition ${isDark
                 ? 'bg-[#110c1b] border-white/10 text-white placeholder-slate-500 focus:border-spotify-green'
                 : 'bg-slate-100 border-slate-200 text-slate-900 placeholder-slate-500 focus:border-green-500'
-            }`}
+              }`}
             placeholder="Tên playlist mới"
             value={name}
             onChange={(e) => setName(e.target.value)}

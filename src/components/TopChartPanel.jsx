@@ -19,6 +19,19 @@ export function TopChartPanel() {
   const [error, setError] = useState(null);
   const [modalSong, setModalSong] = useState(null);
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    checkMobile();
+
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
   useEffect(() => {
     let cancelled = false;
 
@@ -198,7 +211,7 @@ export function TopChartPanel() {
               <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                 <div className="min-w-0">
-                  <p className={`text-xs sm:text-sm uppercase tracking-[0.35em]  ${isDark ? 'text-zing-primary' : 'text-slate-600'}`}>
+                  <p className={`text-xs sm:text-sm uppercase tracking-[0.35em]  ${isDark ? 'text-zing-primary' : 'text-zing-primary'}`}>
                     Xu hướng
                   </p>
 
@@ -213,7 +226,7 @@ export function TopChartPanel() {
               </div>
 
               {/* CHART */}
-              <div className={`mt-4 sm:mt-6 overflow-hidden rounded-[1.5rem] border ${isDark ? 'border-white/10 bg-[#0b0f24]' : 'border-slate-300 bg-gray-300'}  p-3 sm:p-5`}>
+              <div className={`mt-4 sm:mt-6 overflow-hidden rounded-[1.5rem] border ${isDark ? 'border-white/10 bg-[#0b0f24]' : 'border-slate-300 bg-gray-100'}  p-3 sm:p-5`}>
 
                 <svg
                   viewBox="0 0 320 220"
@@ -249,7 +262,13 @@ export function TopChartPanel() {
                     width="320"
                     height="220"
                     rx="24"
-                    fill="#0b0f24"
+                    fill={
+                      isMobile
+                        ? isDark
+                          ? "#0b0f24"
+                          : "#ffff"
+                        : "transparent"
+                    }
                   />
 
                   {[40, 80, 120, 160, 200].map((y) => (
