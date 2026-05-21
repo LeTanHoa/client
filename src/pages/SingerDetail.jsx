@@ -229,11 +229,11 @@ export function SingerDetail() {
           <>
             <div className="mb-4 flex items-center justify-between">
               <p className={`text-sm ${isDark ? 'text-zing-text-secondary' : 'text-slate-600'}`}>
-                Tổng: <strong>{songs.length}</strong> bài hát
+                Tổng: <strong>{filterSongsByArtist?.length}</strong> bài hát
               </p>
             </div>
             <div className="space-y-2">
-              {songs.map((song, idx) => (
+              {filterSongsByArtist?.map((song, idx) => (
                 <SongDetailRow
                   key={song.id}
                   song={song}
