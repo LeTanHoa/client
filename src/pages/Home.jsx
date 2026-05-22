@@ -273,9 +273,10 @@ export function Home() {
               </div>
             )}
         </div>
+        {isAuthenticated && (
         <div className={`h-full w-full lg:w-[70%] `}  >
            <TopChartPanel/>
-        </div>
+        </div>)
       </section>
 
       {/* Featured Singers Section */}
