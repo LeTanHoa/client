@@ -189,94 +189,110 @@ export function Home() {
       {/* Two Column Layout */}
       <section className="flex flex-col lg:flex-row gap-5">
             <div className='flex flex-col lg:flex-row w-full lg:w-[30%]' >
-          {isAuthenticated && recent.length > 0 && (
-              <div
-                className={`w-full h-full  max-w-full overflow-hidden rounded-2xl border p-4 sm:p-5 ${panelClass}`}
+          {isAuthenticated && (
+  <div
+    className={`w-full h-full max-w-full overflow-hidden rounded-2xl border p-4 sm:p-5 ${panelClass}`}
+  >
+    {/* Header */}
+    <div className="mb-4 flex items-center justify-between gap-3">
+      <div className="min-w-0">
+        <h3 className="truncate text-lg font-bold sm:text-xl">
+          ⏰ Bạn vừa nghe
+        </h3>
+
+        <p
+          className={`mt-1 text-xs ${
+            isDark
+              ? 'text-zing-text-tertiary'
+              : 'text-slate-500'
+          }`}
+        >
+          Lịch sử gần đây
+        </p>
+      </div>
+
+      <span
+        className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-bold ${
+          isDark
+            ? 'bg-white/10 text-zing-success'
+            : 'bg-slate-100 text-slate-600'
+        }`}
+      >
+        {recent.length}
+      </span>
+    </div>
+
+    {/* Có dữ liệu */}
+    {recent.length > 0 ? (
+      <div className="space-y-3">
+        {recent.slice(0, 6).map((song) => (
+          <article
+            key={song.id}
+            className={`group flex items-center gap-3 overflow-hidden rounded-2xl border p-3 transition-all duration-200 active:scale-[0.98] ${rowCardClass}`}
+          >
+            {/* Cover */}
+            <img
+              src={coverUrlForSong(song.id)}
+              alt={song.title}
+              className="h-14 w-14 shrink-0 rounded-xl object-cover"
+              onError={(e) => {
+                e.currentTarget.style.opacity = 0;
+              }}
+            />
+
+            {/* Content */}
+            <div className="min-w-0 flex-1 overflow-hidden">
+              <h4 className="line-clamp-2 text-sm font-bold leading-snug">
+                {song.title}
+              </h4>
+
+              <p
+                className={`mt-1 truncate text-xs ${
+                  isDark
+                    ? 'text-zing-text-tertiary'
+                    : 'text-slate-500'
+                }`}
               >
-                {/* Header */}
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <h3 className="truncate text-lg font-bold sm:text-xl">
-                      ⏰ Bạn vừa nghe
-                    </h3>
+                {song.artist}
+              </p>
+            </div>
 
-                    <p
-                      className={`mt-1 text-xs ${isDark
-                          ? 'text-zing-text-tertiary'
-                          : 'text-slate-500'
-                        }`}
-                    >
-                      Lịch sử gần đây
-                    </p>
-                  </div>
-
-                  <span
-                    className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-bold ${isDark
-                        ? 'bg-white/10 text-zing-success'
-                        : 'bg-slate-100 text-slate-600'
-                      }`}
-                  >
-                    {recent.length}
-                  </span>
-                </div>
-
-                {/* Recent List */}
-                <div className="space-y-3">
-                  {recent.slice(0, 6).map((song) => (
-                    <article
-                      key={song.id}
-                      className={`group flex items-center gap-3 overflow-hidden rounded-2xl border p-3 transition-all duration-200 active:scale-[0.98] ${rowCardClass}`}
-                    >
-                      {/* Cover */}
-                      <img
-                        src={coverUrlForSong(song.id)}
-                        alt={song.title}
-                        className="h-14 w-14 shrink-0 rounded-xl object-cover"
-                        onError={(e) => {
-                          e.currentTarget.style.opacity = 0;
-                        }}
-                      />
-
-                      {/* Content */}
-                      <div className="min-w-0 flex-1 overflow-hidden">
-                        <h4 className="line-clamp-2 text-sm font-bold leading-snug">
-                          {song.title}
-                        </h4>
-
-                        <p
-                          className={`mt-1 truncate text-xs ${isDark
-                              ? 'text-zing-text-tertiary'
-                              : 'text-slate-500'
-                            }`}
-                        >
-                          {song.artist}
-                        </p>
-                      </div>
-
-                      {/* Play */}
-                      <button
-                        type="button"
-                        onClick={() =>
-                          playTrack(song, { queue: recent })
-                        }
-                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all active:scale-95 ${isDark
-                            ? 'bg-white/10 text-white hover:bg-zing-primary'
-                            : 'bg-white text-slate-700 shadow hover:bg-zing-primary hover:text-white'
-                          }`}
-                        aria-label="Phát"
-                      >
-                        ▶
-                      </button>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Play */}
+            <button
+              type="button"
+              onClick={() =>
+                playTrack(song, { queue: recent })
+              }
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all active:scale-95 ${
+                isDark
+                  ? 'bg-white/10 text-white hover:bg-zing-primary'
+                  : 'bg-white text-slate-700 shadow hover:bg-zing-primary hover:text-white'
+              }`}
+              aria-label="Phát"
+            >
+              ▶
+            </button>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <div
+        className={`flex h-40 items-center justify-center rounded-2xl border border-dashed text-sm ${
+          isDark
+            ? 'border-white/10 text-zing-text-tertiary'
+            : 'border-slate-200 text-slate-500'
+        }`}
+      >
+        Chưa có bài hát nào được nghe gần đây
+      </div>
+    )}
+  </div>
+)}
         </div>
-        {isAuthenticated && (
+       
         <div className={`h-full w-full lg:w-[70%] `}  >
            <TopChartPanel/>
-        </div>)
+        </div>
       </section>
 
       {/* Featured Singers Section */}
