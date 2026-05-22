@@ -189,7 +189,7 @@ export function Home() {
       {/* Two Column Layout */}
     <section className="flex flex-col gap-5 lg:flex-row">
         <div className="w-full lg:w-[30%]">
-          {isAuthenticated && (
+          {isAuthenticated ? (
             <div
               className={`h-full w-full max-w-full overflow-hidden rounded-2xl border p-4 sm:p-5 ${panelClass}`}
             >
