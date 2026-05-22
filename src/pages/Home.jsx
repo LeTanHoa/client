@@ -82,17 +82,22 @@ export function Home() {
       // Extract unique artists from all songs
       const allSongs = [...(songs || []), ...(trendRes.songs || []), ...(newRes.songs || [])];
       const artistMap = new Map();
-      allSongs.forEach((song) => {
+     allSongs.forEach((song) => {
         if (song.artist) {
-          artistMap.set(song.artist, (artistMap.get(song.artist) || 0) + 1);
+          const normalizedArtist = song.artist.trim().toLowerCase();
+      
+          if (artistMap.has(normalizedArtist)) {
+            artistMap.get(normalizedArtist).songCount += 1;
+          } else {
+            artistMap.set(normalizedArtist, {
+              artist: song.artist.trim(), // giữ tên gốc đầu tiên
+              songCount: 1,
+            });
+          }
         }
       });
       
-      const uniqueSingers = Array.from(artistMap.entries())
-        .map(([artist, count]) => ({
-          artist,
-          songCount: count,
-        }))
+      const uniqueSingers = Array.from(artistMap.values())
         .sort((a, b) => b.songCount - a.songCount)
         .slice(0, 12);
 
