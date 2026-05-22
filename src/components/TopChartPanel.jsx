@@ -131,7 +131,7 @@ export function TopChartPanel() {
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <p className="text-xs sm:text-sm uppercase tracking-[0.35em] text-zing-primary">
-                    #zingchart
+                    #MUchart
                   </p>
 
                   <h2 className={`mt-2 sm:mt-3 text-xl sm:text-2xl font-black ${isDark ? 'text-white' : 'text-black'}`}>
@@ -140,7 +140,7 @@ export function TopChartPanel() {
                 </div>
 
                 <span className="shrink-0 rounded-full border border-zing-primary/50 bg-white/5 px-3 py-1 text-[10px] sm:text-xs font-semibold uppercase text-zing-primary">
-                  Top 7
+                  Top 4
                 </span>
               </div>
 

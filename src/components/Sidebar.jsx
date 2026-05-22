@@ -46,11 +46,11 @@ export function Sidebar() {
         <div className={`sticky top-0 z-10 px-7 py-8 border-b backdrop-blur-sm ${isDark ? 'bg-zing-bg/95 border-white/10' : 'bg-white border-slate-200'}`}>
           <Link to="/" className="flex items-center gap-3">
             <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-zing-primary to-zing-secondary shadow-lg">
-              <span className="text-lg font-black text-white">Z</span>
+              <span className="text-lg font-black text-white">MU</span>
             </div>
             <div>
               <div className="text-xl font-black bg-gradient-to-r from-zing-primary to-zing-accent bg-clip-text text-transparent">
-                ZingMP3
+                MUSICUT
               </div>
               <p className={`text-xs ${isDark ? 'text-zing-text-tertiary' : 'text-slate-500'}`}>
                 Nhạc hay mỗi ngày

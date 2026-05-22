@@ -37,13 +37,13 @@ export function Home() {
 
 
   const normalizeText = (text) => {
-  return decodeURIComponent(text)
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // bỏ dấu
-    .replace(/\s+/g, "") // bỏ khoảng trắng
-    .trim();
-};
+    return decodeURIComponent(text)
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // bỏ dấu
+      .replace(/\s+/g, "") // bỏ khoảng trắng
+      .trim();
+  };
   const load = useCallback(async (q, genre) => {
     setError(null);
     setLoading(true);
@@ -82,10 +82,10 @@ export function Home() {
       // Extract unique artists from all songs
       const allSongs = [...(songs || []), ...(trendRes.songs || []), ...(newRes.songs || [])];
       const artistMap = new Map();
-     allSongs.forEach((song) => {
+      allSongs.forEach((song) => {
         if (song.artist) {
           const normalizedArtist = song.artist.trim().toLowerCase();
-      
+
           if (artistMap.has(normalizedArtist)) {
             artistMap.get(normalizedArtist).songCount += 1;
           } else {
@@ -96,7 +96,7 @@ export function Home() {
           }
         }
       });
-      
+
       const uniqueSingers = Array.from(artistMap.values())
         .sort((a, b) => b.songCount - a.songCount)
         .slice(0, 12);
@@ -141,7 +141,7 @@ export function Home() {
         <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
           <div className="max-w-2xl">
             <p className="text-xs md:text-sm uppercase tracking-widest font-bold text-zing-success">
-              🎵 ZingMP3 Đề Xuất
+              🎵 MUSICUT Đề Xuất
             </p>
             <h1 className="mt-4 text-3xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-zing-primary to-zing-accent bg-clip-text text-transparent">
               Nhạc hay mỗi ngày
@@ -187,11 +187,11 @@ export function Home() {
       </section>
 
       {/* Two Column Layout */}
-    <section className="flex flex-col gap-5 lg:flex-row">
-        <div className="w-full lg:w-[30%]">
-          {isAuthenticated ? (
+      <section className="flex flex-col lg:flex-row gap-5">
+        <div className='flex flex-col lg:flex-row w-full lg:w-[30%]' >
+          {isAuthenticated && recent.length > 0 ? (
             <div
-              className={`h-full w-full max-w-full overflow-hidden rounded-2xl border p-4 sm:p-5 ${panelClass}`}
+              className={`w-full h-full  max-w-full overflow-hidden rounded-2xl border p-4 sm:p-5 ${panelClass}`}
             >
               {/* Header */}
               <div className="mb-4 flex items-center justify-between gap-3">
@@ -199,98 +199,117 @@ export function Home() {
                   <h3 className="truncate text-lg font-bold sm:text-xl">
                     ⏰ Bạn vừa nghe
                   </h3>
-      
+
                   <p
-                    className={`mt-1 text-xs ${
-                      isDark
-                        ? 'text-zing-text-tertiary'
-                        : 'text-slate-500'
-                    }`}
+                    className={`mt-1 text-xs ${isDark
+                      ? 'text-zing-text-tertiary'
+                      : 'text-slate-500'
+                      }`}
                   >
                     Lịch sử gần đây
                   </p>
                 </div>
-      
+
                 <span
-                  className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-bold ${
-                    isDark
-                      ? 'bg-white/10 text-zing-success'
-                      : 'bg-slate-100 text-slate-600'
-                  }`}
+                  className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-bold ${isDark
+                    ? 'bg-white/10 text-zing-success'
+                    : 'bg-slate-100 text-slate-600'
+                    }`}
                 >
                   {recent.length}
                 </span>
               </div>
-      
-              {/* Content */}
-              {recent.length > 0 ? (
-                <div className="space-y-3">
-                  {recent.slice(0, 6).map((song) => (
-                    <article
-                      key={song.id}
-                      className={`group flex items-center gap-3 overflow-hidden rounded-2xl border p-3 transition-all duration-200 active:scale-[0.98] ${rowCardClass}`}
-                    >
-                      {/* Cover */}
-                      <img
-                        src={coverUrlForSong(song.id)}
-                        alt={song.title}
-                        className="h-14 w-14 shrink-0 rounded-xl object-cover"
-                        onError={(e) => {
-                          e.currentTarget.style.opacity = 0;
-                        }}
-                      />
-      
-                      {/* Info */}
-                      <div className="min-w-0 flex-1 overflow-hidden">
-                        <h4 className="line-clamp-2 text-sm font-bold leading-snug">
-                          {song.title}
-                        </h4>
-      
-                        <p
-                          className={`mt-1 truncate text-xs ${
-                            isDark
-                              ? 'text-zing-text-tertiary'
-                              : 'text-slate-500'
+
+              {/* Recent List */}
+              <div className="space-y-3 h-[370px] lg:h-[600px] overflow-x-scroll">
+                {recent.map((song) => (
+                  <article
+                    key={song.id}
+                    className={`group flex items-center gap-3 overflow-hidden rounded-2xl border p-3 transition-all duration-200 active:scale-[0.98] ${rowCardClass}`}
+                  >
+                    {/* Cover */}
+                    <img
+                      src={coverUrlForSong(song.id)}
+                      alt={song.title}
+                      className="h-14 w-14 shrink-0 rounded-xl object-cover"
+                      onError={(e) => {
+                        e.currentTarget.style.opacity = 0;
+                      }}
+                    />
+
+                    {/* Content */}
+                    <div className="min-w-0 flex-1 overflow-hidden">
+                      <h4 className="line-clamp-2 text-sm font-bold leading-snug">
+                        {song.title}
+                      </h4>
+
+                      <p
+                        className={`mt-1 truncate text-xs ${isDark
+                          ? 'text-zing-text-tertiary'
+                          : 'text-slate-500'
                           }`}
-                        >
-                          {song.artist}
-                        </p>
-                      </div>
-      
-                      {/* Play */}
-                      <button
-                        type="button"
-                        onClick={() =>
-                          playTrack(song, { queue: recent })
-                        }
-                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all active:scale-95 ${
-                          isDark
-                            ? 'bg-white/10 text-white hover:bg-zing-primary'
-                            : 'bg-white text-slate-700 shadow hover:bg-zing-primary hover:text-white'
-                        }`}
-                        aria-label="Phát"
                       >
-                        ▶
-                      </button>
-                    </article>
-                  ))}
-                </div>
-              ) : (
-                <div
-                  className={`flex h-40 items-center justify-center rounded-2xl border border-dashed text-sm ${
-                    isDark
-                      ? 'border-white/10 text-zing-text-tertiary'
-                      : 'border-slate-200 text-slate-500'
-                  }`}
-                >
-                  Chưa có bài hát nào được nghe gần đây
-                </div>
-              )}
+                        {song.artist}
+                      </p>
+                    </div>
+
+                    {/* Play */}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        playTrack(song, { queue: recent })
+                      }
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all active:scale-95 ${isDark
+                        ? 'bg-white/10 text-white hover:bg-zing-primary'
+                        : 'bg-white text-slate-700 shadow hover:bg-zing-primary hover:text-white'
+                        }`}
+                      aria-label="Phát"
+                    >
+                      ▶
+                    </button>
+                  </article>
+                ))}
+              </div>
             </div>
-          )}
+          ) : <div
+            className={`w-full h-full  max-w-full overflow-hidden rounded-2xl border p-4 sm:p-5 ${panelClass}`}
+          >
+            {/* Header */}
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <h3 className="truncate text-lg font-bold sm:text-xl">
+                  ⏰ Bạn vừa nghe
+                </h3>
+
+                <p
+                  className={`mt-1 text-xs ${isDark
+                    ? 'text-zing-text-tertiary'
+                    : 'text-slate-500'
+                    }`}
+                >
+                  Lịch sử gần đây
+                </p>
+              </div>
+
+              <span
+                className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-bold ${isDark
+                  ? 'bg-white/10 text-zing-success'
+                  : 'bg-slate-100 text-slate-600'
+                  }`}
+              >
+                {recent.length}
+              </span>
+            </div>
+
+            {/* Recent List */}
+            <div className="space-y-3">
+              <p className={`py-8 text-center ${isDark ? 'text-zing-text-secondary' : 'text-slate-600'}`}>
+                {isAuthenticated ? 'Bạn chưa nghe bài hát nào gần đây' : 'Đăng nhập để xem lịch sử nghe gần đây của bạn'}
+              </p>
+            </div>
+          </div>}
         </div>
-        {/* Top Chart */}
-        <div className="h-full w-full lg:w-[70%]">
+        <div className={`h-full w-full lg:w-[70%] `}  >
           <TopChartPanel />
         </div>
       </section>
@@ -327,7 +346,7 @@ export function Home() {
       <ContentSection
         title="✨ Phát hành mới"
         subtitle="Những bài hát mới được thêm vào"
-        items={newSongs}
+        items={newSongs.slice(0, 10)}
         loading={loadingNew}
         itemType="song"
         onItemPlay={playFrom(newSongs)}
@@ -341,7 +360,6 @@ export function Home() {
         gridCols="grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5"
       />
 
-      {/* For You Personalized Section - Only for authenticated users */}
       {isAuthenticated && recommended.length > 0 && (
         <ContentSection
           title="💝 Dành cho bạn"
@@ -358,7 +376,7 @@ export function Home() {
         />
       )}
 
-        
+
       {/* ở đây */}
 
       {/* Main Songs Section */}
