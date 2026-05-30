@@ -12,7 +12,7 @@ export function ContentSection({
   onItemPlay,
   onItemAdd,
   onSingerClick,
-  gridCols = 'grid-cols-2 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5',
+  gridCols = 'grid-cols-1 sm:gap-3 lg:grid-cols-3 xl:grid-cols-3',
   emptyMessage = 'Chưa có nội dung',
 }) {
   const { isDark } = useTheme();

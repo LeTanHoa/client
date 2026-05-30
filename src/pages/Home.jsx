@@ -339,7 +339,7 @@ export function Home() {
           }
           setModalSong(picked);
         }}
-        gridCols="grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5"
+        gridCols="grid-cols-1 sm:gap-3 lg:grid-cols-3 xl:grid-cols-3"
       />
 
       {/* New Releases Section */}
@@ -357,7 +357,7 @@ export function Home() {
           }
           setModalSong(picked);
         }}
-        gridCols="grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5"
+        gridCols="grid-cols-1 sm:gap-3 lg:grid-cols-3 xl:grid-cols-3"
       />
 
       {isAuthenticated && recommended.length > 0 && (
@@ -371,7 +371,7 @@ export function Home() {
           onItemAdd={(picked) => {
             setModalSong(picked);
           }}
-          gridCols="grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5"
+          gridCols="grid-cols-1 sm:gap-3 lg:grid-cols-3 xl:grid-cols-3"
           emptyMessage="Không có đề xuất"
         />
       )}
@@ -445,7 +445,7 @@ export function Home() {
             <p className="text-sm md:text-base">📭 Chưa có bài nào</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 sm:gap-3">
             {songs.map((song) => (
               <SongCard
                 key={song.id}
